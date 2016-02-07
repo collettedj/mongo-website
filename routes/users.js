@@ -1,9 +1,18 @@
-var express = require('express');
-var router = express.Router();
+"use strict";
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const RouteBase = require('./route-base');
 
-module.exports = router;
+class UserRoute extends RouteBase {
+	constructor(app){
+		super(app);
+	}
+
+	createRoutes(){
+		router.get('/', function(req, res, next) {
+		  res.send('respond with a resource');
+		});
+	}
+
+}
+
+module.exports = UserRoute;
