@@ -39,7 +39,7 @@ gulp.task('default', ['lint'], function () {
             execMap: {'js':'node --debug'},
             env: { 
               'NODE_ENV': 'development',
-              'DEBUG':'server:*,express:application'
+              'DEBUG':'server:*,express:application,mongo-website:*'
             }
         })
         .on('restart', function () {

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
 	firstName: {
 		type: String,
 	},
@@ -13,19 +14,23 @@ const UserSchema = new mongoose.Schema({
 	},
 	password: {
 		type: String,
-	}
+	},
+
+	apps:[
+		{
+			roleId: Schema.Types.ObjectId,
+		}
+	]
 	// owner_id: {
-	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	type: Schema.Types.ObjectId,
 	// 	index: true
 	// },
 	// room_id: {
-	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	type: Schema.Types.ObjectId,
 	// 	index: true
 	// }
 });
 
 const User = mongoose.model('User', UserSchema);
 
-module.exports = {
-  User: User
-};
+module.exports = User;
