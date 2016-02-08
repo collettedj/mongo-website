@@ -9,9 +9,7 @@ class UserRoute extends RouteBase {
 	}
 
 	createRoutes(){
-		this.router.get('/', function(req, res, next) {
-		  res.send('respond with a resource');
-		});
+		super.createGetOneRoute("user");
 		super.createPostRoute("user","user");
 	}
 
