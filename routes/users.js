@@ -12,6 +12,7 @@ class UserRoute extends RouteBase {
 		super.createGetOneRoute();
 		super.createGetManyRoute();
 		super.createPostRoute();
+		super.createPutRoute();
 	}
 
 }

@@ -75,6 +75,29 @@ class RouteBase{
 				});
 		});
 	}
+	
+	createPutRoute(){
+		const responsePath = this.modelUtils.dashSingularName;
+		const bodyPath = responsePath;
+
+		this.router.put('/', (req, res, next) => {
+			const body = req.body[bodyPath];
+			console.log("body id", body.id);
+			this.Model.findOneAndUpdate({_id: body._id}, {$set: body}, {new:true, runValidators: true})
+				.then(savedModel => {
+					if(!savedModel){
+						return res.status(404).send(`${this.Model.modelName} ${body._id} not found`);
+					}					
+					const result = {
+						[responsePath]: savedModel
+					};
+				  	res.json(result);
+				})
+				.catch(err => {
+					res.status(500).send(err.stack);
+				});
+		});
+	}
 
 }
 

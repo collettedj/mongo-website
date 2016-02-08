@@ -1,34 +1,30 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const ApplicationUserSchema = new Schema({
+	appId: Schema.Types.ObjectId,
+});
+
 const UserSchema = new Schema({
 	firstName: {
 		type: String,
+		required: true,
 	},
 	lastName: {
 		type: String,
+		required: true,
 	},
 	userName: {
 		type: String,
-		index: true
+		index: true,
+		required: true,
 	},
 	password: {
 		type: String,
 	},
 
-	apps:[
-		{
-			roleId: Schema.Types.ObjectId,
-		}
-	]
-	// owner_id: {
-	// 	type: Schema.Types.ObjectId,
-	// 	index: true
-	// },
-	// room_id: {
-	// 	type: Schema.Types.ObjectId,
-	// 	index: true
-	// }
+	apps:[ApplicationUserSchema],
+
 });
 
 const User = mongoose.model('User', UserSchema);
