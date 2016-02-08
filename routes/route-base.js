@@ -1,12 +1,14 @@
 "use strict";
 
-var express = require('express');
+const express = require('express');
+const ModelUtils = require('../utils/model-utils');
 
 class RouteBase{
 	constructor(app, Model){
 		this.app = app;
 		this.router = express.Router(); 
 		this.Model = Model;
+		this.modelUtils = new ModelUtils(Model);
 
 		if(this.createRoutes){
 			this.createRoutes();	
@@ -15,9 +17,11 @@ class RouteBase{
 		}		
 	}
 
-	createGetOneRoute(responsePath){
+	createGetOneRoute(){
+		const responsePath = this.modelUtils.dashSingularName;
+
 		this.router.get('/:id', (req, res, next) => {
-			var modelId = req.params.id;
+			const modelId = req.params.id;
 			this.Model.findOne({_id:modelId})
 				.then(model => {
 					if(!model){
@@ -34,9 +38,11 @@ class RouteBase{
 		});
 	}
 
-	createGetManyRoute(responsePath){
+	createGetManyRoute(){
+		const responsePath = this.modelUtils.dashPluralName;
+
 		this.router.get('/', (req, res, next) => {
-			var modelId = req.params.id;
+			const modelId = req.params.id;
 			this.Model.find()
 				.then(model => {
 					const result = {
@@ -50,7 +56,10 @@ class RouteBase{
 		});
 	}
  
-	createPostRoute(bodyPath, responsePath){
+	createPostRoute(){
+		const responsePath = this.modelUtils.dashSingularName;
+		const bodyPath = responsePath;
+
 		this.router.post('/', (req, res, next) => {
 			const body = req.body[bodyPath];
 			const model = new this.Model(body);
