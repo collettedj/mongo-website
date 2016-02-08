@@ -33,6 +33,22 @@ class RouteBase{
 				});
 		});
 	}
+
+	createGetManyRoute(responsePath){
+		this.router.get('/', (req, res, next) => {
+			var modelId = req.params.id;
+			this.Model.find()
+				.then(model => {
+					const result = {
+						[responsePath]: model
+					};
+				  	res.json(result);
+				})
+				.catch(err => {
+					res.status(500).send(err.stack);
+				});
+		});
+	}
  
 	createPostRoute(bodyPath, responsePath){
 		this.router.post('/', (req, res, next) => {

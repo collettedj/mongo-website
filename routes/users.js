@@ -10,6 +10,7 @@ class UserRoute extends RouteBase {
 
 	createRoutes(){
 		super.createGetOneRoute("user");
+		super.createGetManyRoute("users");
 		super.createPostRoute("user","user");
 	}
 
