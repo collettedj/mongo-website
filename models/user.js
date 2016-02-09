@@ -41,7 +41,7 @@ UserSchema.methods.verifyPassword = function(password, cb) {
   });
 };
 
-UserSchema.pre('save', function(callback) {
+UserSchema.methods.hashPassword = function(callback) {
 	var user = this;
 
 	// Break out if the password hasn't changed
@@ -63,7 +63,9 @@ UserSchema.pre('save', function(callback) {
 			callback();
 		});
 	});
-});
+};
+
+UserSchema.pre('save', UserSchema.methods.hashPassword);
 
 const User = mongoose.model('User', UserSchema);
 
