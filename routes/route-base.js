@@ -25,6 +25,8 @@ class RouteBase{
 			message: err.stack,
 			createdAt: new Date(),
 		});
+		
+		console.log("error response", err.stack);
 		return errorLog.save()
 			.catch(err => {
 				console.log("failed to save error to log", err.stack);
@@ -57,17 +59,6 @@ class RouteBase{
 				});
 		};		
 	}
-	
-	createGetOneRoute(options){
-		options = options || {};
-		_.defaults(options,{authenticate:true});
-
-		if(options.authenticate){
-			this.router.get(this.getOneRoutePath, isAuthenticated, this.getOneMiddleware);
-		} else {
-			this.router.get(this.getOneRoutePath, this.getOneMiddleware);
-		}
-	}
 
 	get getManyRoutePath(){
 		return '/';
@@ -87,17 +78,6 @@ class RouteBase{
 					return this.sendErrorResponse(res, err);
 				});
 		};
-	}
-
-	createGetManyRoute(options){
-		options = options || {};
-		_.defaults(options,{authenticate:true});		
-
-		if(options.authenticate){
-			this.router.get(this.getManyRoutePath, isAuthenticated, this.getManyMiddleware);
-		} else {
-			this.router.get(this.getManyRoutePath, this.getManyMiddleware);
-		}
 	}
 
 	get postRoutePath(){
@@ -123,17 +103,6 @@ class RouteBase{
 		};
 	}
  
-	createPostRoute(options){
-		options = options || {};
-		_.defaults(options,{authenticate:true});		
-
-		if(options.authenticate){
-			this.router.post(this.postRoutePath, isAuthenticated, this.postRouteMiddleware);
-		} else {
-			this.router.post(this.postRoutePath, this.postRouteMiddleware);
-		}
-	}
-
 	get putRoutePath(){
 		return '/:id';
 	}
@@ -161,14 +130,30 @@ class RouteBase{
 		};
 	}
 	
+	createGetOneRoute(options){
+		this._buildRoute("get", this.getOneRoutePath, this.getOneMiddleware, options);
+	}	
+	
+	createGetManyRoute(options){
+		this._buildRoute("get", this.getManyRoutePath, this.getManyMiddleware, options);
+	}	
+	
+	createPostRoute(options){
+		this._buildRoute("post", this.postRoutePath, this.postRouteMiddleware, options);
+	}	
+	
 	createPutRoute(options){
+		this._buildRoute("put", this.putRoutePath, this.putRouteMiddleware, options);
+	}
+	
+	_buildRoute(httpMethod, routePath, routeMiddleware, options){
 		options = options || {};
 		_.defaults(options,{authenticate:true});		
 
 		if(options.authenticate){
-			this.router.put(this.putRoutePath, isAuthenticated, this.putRouteMiddleware);
+			this.router[httpMethod](routePath, isAuthenticated, routeMiddleware);
 		} else {
-			this.router.put(this.putRoutePath, this.putRouteMiddleware);
+			this.router[httpMethod](routePath, routeMiddleware);
 		}
 	}
 

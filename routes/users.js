@@ -9,10 +9,10 @@ class UserRoute extends RouteBase {
 	}
 
 	createRoutes(){
-		super.createGetOneRoute({authenticate:true});
-		super.createGetManyRoute({authenticate:true});
-		super.createPutRoute({authenticate:true});
-		super.createPostRoute();
+		super.createGetOneRoute();
+		super.createGetManyRoute();
+		super.createPutRoute();
+		super.createPostRoute({authenticate:false});
 	}
 
 }
