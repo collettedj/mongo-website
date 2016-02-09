@@ -7,7 +7,15 @@ const mongoose = require('mongoose');
 const dbconf = require('../config/dbconf');
 const debug = require('debug')('mongo-website:models');
 
-mongoose.connect(dbconf.mongo);
+const env = process.env.NODE_ENV || "development";
+const mongoUrl = dbconf.mongo[env];
+
+if(!mongoUrl){
+	throw new Error(`Could not get mongodb connection string for environment ${env}`);
+}
+
+
+mongoose.connect(mongoUrl);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

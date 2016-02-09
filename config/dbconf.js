@@ -1,7 +1,10 @@
 "use strict";
 
 const config = {
-	mongo: "mongodb://localhost:27017/mongo-website",
+	mongo: {
+	    development:"mongodb://localhost:27017/mongo-website",
+	    test:"mongodb://localhost:27017/mongo-website-test",
+	}
 };
 
 module.exports = config;
