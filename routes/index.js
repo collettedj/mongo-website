@@ -6,7 +6,7 @@ const path = require('path');
 const basename = path.basename(module.filename);
 
 
-const skipFiles = [basename, "route-base.js"];
+const skipFiles = [basename, "route-base.js", "auth.js"];
 
 function loadRoutes(baseRoutePath, app){
 	fs.readdirSync(__dirname)

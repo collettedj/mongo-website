@@ -2,6 +2,7 @@
 
 const express = require('express');
 const ModelUtils = require('../utils/model-utils');
+const isAuthenticated = require('./auth').isAuthenticated;
 
 class RouteBase{
 	constructor(app, Model, ErrorLog){
