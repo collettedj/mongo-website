@@ -33,7 +33,7 @@ var handleError = function (err) {
 // });
 
 gulp.task('default', ['lint'], function () {
-    nodemon({ script: './bin/www',
+    nodemon({ script: './bin/www.js',
             ext: 'html js',
             tasks: ['lint'],
             execMap: {'js':'node --debug'},

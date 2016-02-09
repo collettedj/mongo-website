@@ -1,5 +1,6 @@
 "use strict";
 
+const _ = require('lodash');
 const express = require('express');
 const ModelUtils = require('../utils/model-utils');
 const isAuthenticated = require('./auth').isAuthenticated;
@@ -33,10 +34,14 @@ class RouteBase{
 			});			
 	}
 	
-	createGetOneRoute(){
+	createGetOneRoute(options){
 		const responsePath = this.modelUtils.dashSingularName;
+		const routePath = '/:id';
 
-		this.router.get('/:id', (req, res, next) => {
+		options = options || {};
+		_.defaults(options,{authenticate:true});
+
+		const getOneMiddleware = (req, res, next) => {
 			const modelId = req.params.id;
 			this.Model.findOne({_id:modelId})
 				.then(model => {
@@ -51,7 +56,14 @@ class RouteBase{
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});
-		});
+		};
+
+		if(options.authenticate){
+			this.router.get('/:id', isAuthenticated, getOneMiddleware);
+		} else {
+			this.router.get('/:id', getOneMiddleware);
+		}
+		
 	}
 
 	createGetManyRoute(){
