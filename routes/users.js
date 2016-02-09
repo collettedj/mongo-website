@@ -11,9 +11,25 @@ class UserRoute extends RouteBase {
 	createRoutes(){
 		super.createGetOneRoute();
 		super.createGetManyRoute();
-		super.createPutRoute();
 		super.createPostRoute({authenticate:false});
+		// super.createPutRoute();
+		// super.createDeleteRoute();
+		
+		this.router.put(this.putRoutePath, this.isAuthenticated, this.isSelf, this.putRouteMiddleware);
+		this.router.delete(this.deleteRoutePath, this.isAuthenticated, this.isSelf, this.deleteRouteMiddleware);
 	}
+	
+	isSelf(req, res, next){
+		const userId = req.user._id.toString();
+		const requestId = req.params.id;
+		
+		if(requestId !== userId){
+			return res.status(401).send(`user ${userId} cannot modify user ${requestId}`);
+		} else {
+			next(null);	
+		}
+	}	
+
 
 }
 

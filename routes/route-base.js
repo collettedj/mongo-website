@@ -12,6 +12,7 @@ class RouteBase{
 		this.Model = Model;
 		this.ErrorLog = ErrorLog;
 		this.modelUtils = new ModelUtils(Model);
+		this.isAuthenticated = isAuthenticated;
 
 		if(this.createRoutes){
 			this.createRoutes();	
@@ -130,6 +131,30 @@ class RouteBase{
 		};
 	}
 	
+	get deleteRoutePath(){
+		return '/:id';
+	}
+
+	get deleteRouteMiddleware(){
+		const responsePath = this.modelUtils.dashSingularName;
+		const bodyPath = responsePath;
+
+		return (req, res, next) => {
+			const modelId = req.params.id;
+			const body = req.body[bodyPath];
+			this.Model.remove({_id: modelId})
+				.then(deleteModel => {
+					if(!deleteModel){
+						return res.status(404).send(`${this.Model.modelName} ${body._id} not found`);
+					}					
+				  	res.sendStatus(204);
+				})
+				.catch(err => {
+					return this.sendErrorResponse(res, err);
+				});
+		};
+	}
+	
 	createGetOneRoute(options){
 		this._buildRoute("get", this.getOneRoutePath, this.getOneMiddleware, options);
 	}	
@@ -143,14 +168,22 @@ class RouteBase{
 	}	
 	
 	createPutRoute(options){
-		this._buildRoute("put", this.putRoutePath, this.putRouteMiddleware, options);
+		this._buildRoute("put", this.putRoutePath, this.putRouteMiddleware, options );
+	}
+	
+	createDeleteRoute(options){
+		this._buildRoute("delete", this.deleteRoutePath, this.deleteRouteMiddleware, options );
+	}	
+	
+	_createDefaultOption(options, defaults){
+		options = options || {};
+		_.defaults(options,defaults);
+		return options;
 	}
 	
 	_buildRoute(httpMethod, routePath, routeMiddleware, options){
-		options = options || {};
-		_.defaults(options,{authenticate:true});		
-
-		if(options.authenticate){
+		const resolvedOptions = this._createDefaultOption(options, {authenticate:true});
+		if(resolvedOptions.authenticate){
 			this.router[httpMethod](routePath, isAuthenticated, routeMiddleware);
 		} else {
 			this.router[httpMethod](routePath, routeMiddleware);
