@@ -4,10 +4,11 @@ const express = require('express');
 const ModelUtils = require('../utils/model-utils');
 
 class RouteBase{
-	constructor(app, Model){
+	constructor(app, Model, ErrorLog){
 		this.app = app;
 		this.router = express.Router(); 
 		this.Model = Model;
+		this.ErrorLog = ErrorLog;
 		this.modelUtils = new ModelUtils(Model);
 
 		if(this.createRoutes){
@@ -16,7 +17,21 @@ class RouteBase{
 			throw new Error("you must define the createRoutes method");
 		}		
 	}
-
+	
+	sendErrorResponse(res, err){
+		const errorLog = new this.ErrorLog({
+			message: err.stack,
+			createdAt: new Date(),
+		});
+		return errorLog.save()
+			.catch(err => {
+				console.log("failed to save error to log", err.stack);
+			})
+			.then(() => {
+				res.status(500).send(err.message);		
+			});			
+	}
+	
 	createGetOneRoute(){
 		const responsePath = this.modelUtils.dashSingularName;
 
@@ -33,7 +48,7 @@ class RouteBase{
 				  	res.json(result);
 				})
 				.catch(err => {
-					res.status(500).send(err.stack);
+					return this.sendErrorResponse(res, err);
 				});
 		});
 	}
@@ -42,7 +57,6 @@ class RouteBase{
 		const responsePath = this.modelUtils.dashPluralName;
 
 		this.router.get('/', (req, res, next) => {
-			const modelId = req.params.id;
 			this.Model.find()
 				.then(model => {
 					const result = {
@@ -51,7 +65,7 @@ class RouteBase{
 				  	res.json(result);
 				})
 				.catch(err => {
-					res.status(500).send(err.stack);
+					return this.sendErrorResponse(res, err);
 				});
 		});
 	}
@@ -71,7 +85,7 @@ class RouteBase{
 				  	res.json(result);
 				})
 				.catch(err => {
-					res.status(500).send(err.stack);
+					return this.sendErrorResponse(res, err);
 				});
 		});
 	}
@@ -82,7 +96,7 @@ class RouteBase{
 
 		this.router.put('/', (req, res, next) => {
 			const body = req.body[bodyPath];
-			console.log("body id", body.id);
+			console.log("body id", body._id);
 			this.Model.findOneAndUpdate({_id: body._id}, {$set: body}, {new:true, runValidators: true})
 				.then(savedModel => {
 					if(!savedModel){
@@ -94,7 +108,7 @@ class RouteBase{
 				  	res.json(result);
 				})
 				.catch(err => {
-					res.status(500).send(err.stack);
+					return this.sendErrorResponse(res, err);
 				});
 		});
 	}

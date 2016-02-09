@@ -5,7 +5,7 @@ const models = require('../models');
 
 class UserRoute extends RouteBase {
 	constructor(app){ 
-		super(app, models.user);
+		super(app, models.User, models.ErrorLog);
 	}
 
 	createRoutes(){

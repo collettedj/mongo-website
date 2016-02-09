@@ -28,7 +28,7 @@ function loadModels(){
 		.forEach(function(file) {
 		    const basename = path.basename(file, '.js');
 		    const Model = require('./' + basename);
-		    models[basename] = Model;
+		    models[Model.modelName] = Model;
 		});
 	return models;
 }
