@@ -1,3 +1,7 @@
+/**
+ * RouteBase module.
+ * @module routes/route-base
+ */
 "use strict";
 
 const _ = require('lodash');
@@ -5,7 +9,16 @@ const express = require('express');
 const ModelUtils = require('../utils/model-utils');
 const isAuthenticated = require('./auth').isAuthenticated;
 
+/**
+ * RouteBase is a base class for routes that are REST services over a mongoose data model.
+ */
 class RouteBase{
+	
+	/**
+	 * @param {object} app This is the express application object
+	 * @param {object} Model The mongoose model that the route will use.
+	 * @param {object} ErrorLog The mongoose model that is used for logging.
+	 */
 	constructor(app, Model, ErrorLog){
 		this.app = app;
 		this.router = express.Router(); 
@@ -21,6 +34,11 @@ class RouteBase{
 		}		
 	}
 	
+	/**
+	 * Send a 500 response for unexptected errors. It will also log the error to the ErrorLog model that was passed in to the constructor
+	 * @param {object} res express response object
+	 * @param {object} error 
+	 */
 	sendErrorResponse(res, err){
 		const errorLog = new this.ErrorLog({
 			message: err.stack,
@@ -37,10 +55,50 @@ class RouteBase{
 			});			
 	}
 
+	/**
+	 * The default path for a GET route that will get one result
+	 * @returns {string}
+	 */
 	get getOneRoutePath(){
 		return '/:id';
 	}
+	
+	/**
+	 * The default path for a GET route that will get multiple result
+	 * @returns {string}
+	 */
+	get getManyRoutePath(){
+		return '/';
+	}	
+	
+	/**
+	 * The default path for a POST route
+	 * @returns {string}
+	 */
+	get postRoutePath(){
+		return '/';
+	}
+	
+ 	/**
+	 * The default path for a PUT route
+	 * @returns {string}
+	 */
+	get putRoutePath(){
+		return '/:id';
+	}	
+	
+ 	/**
+	 * The default path for a DELETE route
+	 * @returns {string}
+	 */	
+	get deleteRoutePath(){
+		return '/:id';
+	}	
 
+ 	/**
+	 * Express middleware for a GET route that will return a single model
+	 * @returns {function} an express middleware function
+	 */	
 	get getOneMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		return (req, res, next) => {
@@ -61,10 +119,10 @@ class RouteBase{
 		};		
 	}
 
-	get getManyRoutePath(){
-		return '/';
-	}
-
+ 	/**
+	 * Express middleware for a GET route that will return multiple models
+	 * @returns {function} an express middleware function
+	 */	
 	get getManyMiddleware(){
 		const responsePath = this.modelUtils.dashPluralName;
 		return (req, res, next) => {
@@ -81,10 +139,10 @@ class RouteBase{
 		};
 	}
 
-	get postRoutePath(){
-		return '/';
-	}
-
+	/**
+	 * Express middleware for a POST route that will insert a mongoose object
+	 * @returns {function} an express middleware function
+	 */
 	get postRouteMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		const bodyPath = responsePath;
@@ -104,10 +162,10 @@ class RouteBase{
 		};
 	}
  
-	get putRoutePath(){
-		return '/:id';
-	}
-
+ 	/**
+	 * Express middleware for a PUT route that will update a mongoose object
+	 * @returns {function} an express middleware function
+	 */
 	get putRouteMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		const bodyPath = responsePath;
@@ -131,10 +189,10 @@ class RouteBase{
 		};
 	}
 	
-	get deleteRoutePath(){
-		return '/:id';
-	}
-
+ 	/**
+	 * Express middleware for a DELETE route that will delete a mongoose object
+	 * @returns {function} an express middleware function
+	 */	
 	get deleteRouteMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		const bodyPath = responsePath;
@@ -155,22 +213,42 @@ class RouteBase{
 		};
 	}
 	
+ 	/**
+	 * Create an express GET one route for the default getOneRoutePath and getOneMiddleware
+	 * @params {object} has an authenticate option to make the route require authentication
+	 */		
 	createGetOneRoute(options){
 		this._buildRoute("get", this.getOneRoutePath, this.getOneMiddleware, options);
 	}	
 	
+ 	/**
+	 * Create an express GET many route for the default getManyRoutePath and getManyMiddleware
+	 * @params {object} has an authenticate option to make the route require authentication
+	 */		
 	createGetManyRoute(options){
 		this._buildRoute("get", this.getManyRoutePath, this.getManyMiddleware, options);
 	}	
 	
+ 	/**
+	 * Create an express POST route for the default postRoutePath and postRouteMiddleware
+	 * @params {object} has an authenticate option to make the route require authentication
+	 */		
 	createPostRoute(options){
 		this._buildRoute("post", this.postRoutePath, this.postRouteMiddleware, options);
 	}	
 	
+ 	/**
+	 * Create an express PUT route for the default putRoutePath and putRouteMiddleware
+	 * @params {object} has an authenticate option to make the route require authentication
+	 */		
 	createPutRoute(options){
 		this._buildRoute("put", this.putRoutePath, this.putRouteMiddleware, options );
 	}
 	
+ 	/**
+	 * Create an express DELETE route for the default deleteRoutePath and deleteRouteMiddleware
+	 * @params {object} has an authenticate option to make the route require authentication
+	 */		
 	createDeleteRoute(options){
 		this._buildRoute("delete", this.deleteRoutePath, this.deleteRouteMiddleware, options );
 	}	

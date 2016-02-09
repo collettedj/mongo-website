@@ -1,9 +1,17 @@
+/**
+ * auth module.
+ * @module routes/auth
+ */
 "use strict";
 
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const User = require('../models/user');
 
+/**
+ * description
+ *
+ */
 function authenticate(username, password, callback) {
     User.findOne({ userName: username }, function (err, user) {
         if (err) { return callback(err); }
@@ -26,8 +34,14 @@ function authenticate(username, password, callback) {
 
 passport.use(new BasicStrategy(authenticate));
 
+/**
+ * description
+ *
+ */
+const isAuthenticated = passport.authenticate('basic', { session : false });
+
 module.exports = {
-    isAuthenticated: passport.authenticate('basic', { session : false }),
+    isAuthenticated: isAuthenticated,
     authenticate: authenticate
 };
 
