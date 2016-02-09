@@ -33,15 +33,14 @@ class RouteBase{
 				res.status(500).send(err.message);		
 			});			
 	}
-	
-	createGetOneRoute(options){
+
+	get getOneRoutePath(){
+		return '/:id';
+	}
+
+	get getOneMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
-		const routePath = '/:id';
-
-		options = options || {};
-		_.defaults(options,{authenticate:true});
-
-		const getOneMiddleware = (req, res, next) => {
+		return (req, res, next) => {
 			const modelId = req.params.id;
 			this.Model.findOne({_id:modelId})
 				.then(model => {
@@ -56,20 +55,27 @@ class RouteBase{
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});
-		};
+		};		
+	}
+	
+	createGetOneRoute(options){
+		options = options || {};
+		_.defaults(options,{authenticate:true});
 
 		if(options.authenticate){
-			this.router.get('/:id', isAuthenticated, getOneMiddleware);
+			this.router.get(this.getOneRoutePath, isAuthenticated, this.getOneMiddleware);
 		} else {
-			this.router.get('/:id', getOneMiddleware);
+			this.router.get(this.getOneRoutePath, this.getOneMiddleware);
 		}
-		
 	}
 
-	createGetManyRoute(){
-		const responsePath = this.modelUtils.dashPluralName;
+	get getManyRoutePath(){
+		return '/';
+	}
 
-		this.router.get('/', (req, res, next) => {
+	get getManyMiddleware(){
+		const responsePath = this.modelUtils.dashPluralName;
+		return (req, res, next) => {
 			this.Model.find()
 				.then(model => {
 					const result = {
@@ -80,14 +86,28 @@ class RouteBase{
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});
-		});
+		};
 	}
- 
-	createPostRoute(){
+
+	createGetManyRoute(options){
+		options = options || {};
+		_.defaults(options,{authenticate:true});		
+
+		if(options.authenticate){
+			this.router.get(this.getManyRoutePath, isAuthenticated, this.getManyMiddleware);
+		} else {
+			this.router.get(this.getManyRoutePath, this.getManyMiddleware);
+		}
+	}
+
+	get postRoutePath(){
+		return '/';
+	}
+
+	get postRouteMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		const bodyPath = responsePath;
-
-		this.router.post('/', (req, res, next) => {
+		return (req, res, next) => {
 			const body = req.body[bodyPath];
 			const model = new this.Model(body);
 			model.save()
@@ -100,17 +120,32 @@ class RouteBase{
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});
-		});
+		};
 	}
-	
-	createPutRoute(){
+ 
+	createPostRoute(options){
+		options = options || {};
+		_.defaults(options,{authenticate:true});		
+
+		if(options.authenticate){
+			this.router.post(this.postRoutePath, isAuthenticated, this.postRouteMiddleware);
+		} else {
+			this.router.post(this.postRoutePath, this.postRouteMiddleware);
+		}
+	}
+
+	get putRoutePath(){
+		return '/:id';
+	}
+
+	get putRouteMiddleware(){
 		const responsePath = this.modelUtils.dashSingularName;
 		const bodyPath = responsePath;
 
-		this.router.put('/', (req, res, next) => {
+		return (req, res, next) => {
+			const modelId = req.params.id;
 			const body = req.body[bodyPath];
-			console.log("body id", body._id);
-			this.Model.findOneAndUpdate({_id: body._id}, {$set: body}, {new:true, runValidators: true})
+			this.Model.findOneAndUpdate({_id: modelId}, {$set: body}, {new:true, runValidators: true})
 				.then(savedModel => {
 					if(!savedModel){
 						return res.status(404).send(`${this.Model.modelName} ${body._id} not found`);
@@ -123,7 +158,18 @@ class RouteBase{
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});
-		});
+		};
+	}
+	
+	createPutRoute(options){
+		options = options || {};
+		_.defaults(options,{authenticate:true});		
+
+		if(options.authenticate){
+			this.router.put(this.putRoutePath, isAuthenticated, this.putRouteMiddleware);
+		} else {
+			this.router.put(this.putRoutePath, this.putRouteMiddleware);
+		}
 	}
 
 }
