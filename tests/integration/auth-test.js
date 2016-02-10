@@ -40,7 +40,12 @@ describe("integration: auth", function(){
         authenticate("test", "abc1234", (err, user) => {
             assert.equal(null,err);
             assert.equal(false, user);
-            done(err);    
+            models.User.findOne({userName:"test"})
+                .then(foundUser => {
+                    assert.equal(1, foundUser.badPasswordAttempts);
+                    done(err);
+                })
+                .catch(done);  
         });
         
     });

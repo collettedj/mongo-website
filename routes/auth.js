@@ -6,7 +6,7 @@
 
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
-const User = require('../models/user');
+const User = require('../models').User;
 
 /**
  * Expresss middlware to implement basic authentication
@@ -24,13 +24,21 @@ function authenticate(username, password, callback) {
         
         // Make sure the password is correct
         user.verifyPassword(password, function(err, isMatch) {
-          if (err) { return callback(err); }
-        
-          // Password did not match
-          if (!isMatch) { return callback(null, false); }
-        
-          // Success
-          return callback(null, user);
+            if (err) { return callback(err); }
+
+            // Password did not match
+            if (!isMatch) { 
+                return User.findOneAndUpdate({ _id: user._id }, { $inc: { badPasswordAttempts: 1 } }, {new:true})
+                    .then(foundUser =>{
+                        callback(null, false);
+                    })
+                    .catch(err => {
+                        callback(err);
+                    });
+            }
+
+            // Success
+            return callback(null, user);
         });
     });
 }

@@ -17,6 +17,8 @@ const ApplicationUserSchema = new Schema({
 });
 
 const UserSchema = new Schema({
+
+
 	firstName: {
 		type: String,
 		required: true,
@@ -35,6 +37,12 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	badPasswordAttempts: {
+		type: Number,
+		default:0,
+		required:true,
+	},
+
 
 	apps:[ApplicationUserSchema],
 
