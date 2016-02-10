@@ -17,6 +17,10 @@ const ApplicationUserSchema = new Schema({
 	appId: Schema.Types.ObjectId,
 });
 
+/**
+ * Mongoose schema to define user models
+ * @type {Schema}
+ */
 const UserSchema = new Schema({
 
 

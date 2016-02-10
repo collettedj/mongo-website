@@ -53,21 +53,21 @@ passport.use(new BasicStrategy(authenticate));
  * Passport middleware to implement basic authentication
  * @type {Middleware}
  */
-// const isAuthenticated = passport.authenticate('basic', { session : false });
+const isAuthenticated = passport.authenticate('basic', { session : false });
 
 
-const isAuthenticated = function(req, res, next){
-     passport.authenticate('basic', { session : false }, function(err, user, info){
-        if(err) { return next(err); }
+// const isAuthenticated = function(req, res, next){
+//      passport.authenticate('basic', { session : false }, function(err, user, info){
+//         if(err) { return next(err); }
         
-        if(!user){
-            res.status(401).send(info);
-        } else {
-            req.user = user;
-            next();
-        }
-     })(req, res, next);
-};
+//         if(!user){
+//             res.status(401).send(info);
+//         } else {
+//             req.user = user;
+//             next();
+//         }
+//      })(req, res, next);
+// };
 
 /**
  * This module exports the isAuthenticated passport middlewares

@@ -7,6 +7,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const RoleSchema = new Schema({
+	name: String,
+	description: String,
+});
+
 /**
  * Mongoose schema to for applications
  * @type {Schema}
@@ -20,12 +25,7 @@ const ApplicationSchema = new Schema({
 		type: String,
 	},
 
-	roles:[
-		{
-			name: String,
-			description: String,
-		}
-	]
+	roles:[RoleSchema],
 
 });
 
