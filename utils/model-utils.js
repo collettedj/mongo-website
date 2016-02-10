@@ -23,7 +23,7 @@ class ModelUtils{
 	 * @return {string} the singular dasherized model name
 	 */
 	get dashSingularName(){
-		const dashSingularName = inflection.transform( this.Model.modelName, [ 'dasherize', 'singularize' ]).toLowerCase(); 
+		const dashSingularName = inflection.transform( this.Model.modelName, [ 'underscore', 'dasherize', 'singularize' ]).toLowerCase(); 
 		return dashSingularName;
 	}
 
@@ -32,7 +32,7 @@ class ModelUtils{
 	 * @return {string} the plural dasherized model name
 	 */
 	get dashPluralName(){
-		const dashSingularName = inflection.transform( this.Model.modelName, [ 'dasherize', 'pluralize' ]).toLowerCase(); 
+		const dashSingularName = inflection.transform( this.Model.modelName, [ 'underscore', 'dasherize', 'pluralize' ]).toLowerCase(); 
 		return dashSingularName;
 	}
 }
