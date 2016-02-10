@@ -39,22 +39,22 @@ describe("integration: auth", function(){
         
         authenticate("test", "abc1234", (err, user) => {
             if(err){ return done(err); }
+            authenticate("test", "abc1234", (err, user) => {
+                if(err){ return done(err); }
                 authenticate("test", "abc1234", (err, user) => {
                     if(err){ return done(err); }
-                    authenticate("test", "abc1234", (err, user) => {
-                        if(err){ return done(err); }
-                        assert.equal(null,err);
-                        assert.equal(false, user);
-                        models.User.findOne({userName:"test"})
-                            .then(foundUser => {
-                                assert.equal(3, foundUser.badPasswordAttempts);
-                                assert.equal(true, foundUser.isLockedOut);
-                                return done(err);
-                            })
-                            .catch(done);                          
-                    });  
+                    assert.equal(null,err);
+                    assert.equal(false, user);
+                    models.User.findOne({userName:"test"})
+                        .then(foundUser => {
+                            assert.equal(3, foundUser.badPasswordAttempts);
+                            assert.equal(true, foundUser.isLockedOut);
+                            return done(err);
+                        })
+                        .catch(done);                          
+                });  
 
-                });
+            });
         });
         
     });
