@@ -71,9 +71,9 @@ UserSchema.methods.verifyPassword = function(password, cb) {
 
 /**
  * increment the badPasswordAttempts when user enters incorrect password
- *
+ * @param  {Function} callback
  */
-UserSchema.methods.incrementBadPassword = function(cb) {
+UserSchema.methods.incrementBadPasswordAttempts = function(cb) {
 	User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, {new:true}, (err, updatedUser) => {
 		if(err){return cb(err);	}
 		
@@ -85,6 +85,17 @@ UserSchema.methods.incrementBadPassword = function(cb) {
 			});
 		}
 		
+		return cb(null, updatedUser);
+	});
+};
+
+/**
+ * set bad password attempts back to zero
+ * @param  {Function} callback
+ */
+UserSchema.methods.resetBadPasswordAttempts = function(cb) {
+	User.findOneAndUpdate({ _id: this._id }, { $set: { badPasswordAttempts: 0 } }, {new:true}, (err, updatedUser) => {
+		if(err){return cb(err);	}
 		return cb(null, updatedUser);
 	});
 };

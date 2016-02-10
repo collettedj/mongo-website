@@ -22,20 +22,27 @@ function authenticate(username, password, callback) {
         // No user found with that username
         if (!user) { return callback(null, false); }
         
+        // User has been locked out
+        if(user.isLockedOut) { return callback(null, false); }
+        
         // Make sure the password is correct
         user.verifyPassword(password, function(err, isMatch) {
             if (err) { return callback(err); }
 
             // Password did not match
             if (!isMatch) { 
-                return user.incrementBadPassword((err, updatedUser) => {
+                return user.incrementBadPasswordAttempts((err, updatedUser) => {
                     if (err) { return callback(err); }
                     return callback(null, false);
                 });
             }
-
+            
             // Success
-            return callback(null, user);
+            return user.resetBadPasswordAttempts((err, updatedUser) => {
+                    if (err) { return callback(err); }
+                    return callback(null, updatedUser);
+            });
+
         });
     });
 }

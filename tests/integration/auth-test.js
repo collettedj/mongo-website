@@ -77,5 +77,23 @@ describe("integration: auth", function(){
             done(err);    
         });
         
-    });    
+    });   
+    
+    it("successful login resets bad password attempts", function(done){
+
+        models.User.findOneAndUpdate({ userName: "test" }, { $set: { badPasswordAttempts:2 } }, {new:true} )
+            .then(updatedUser => {
+                assert.equal(false, updatedUser.isLockedOut);
+                assert.equal(2, updatedUser.badPasswordAttempts);
+                
+                authenticate("test", "test1234", (err, user) => {
+                    assert.equal(null,err);
+                    assert.notEqual(false, user);
+                    assert.equal(0, user.badPasswordAttempts);
+                    return done();
+                });                
+            })
+            .catch(done); 
+
+    });        
 });
