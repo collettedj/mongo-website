@@ -1,3 +1,7 @@
+/**
+ * app module. The express application
+ * @module app
+ */
 "use strict";
 
 var express = require('express');

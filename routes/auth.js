@@ -9,8 +9,11 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const User = require('../models/user');
 
 /**
- * description
- *
+ * Expresss middlware to implement basic authentication
+ * @param  {string} username 
+ * @param  {string} password
+ * @param  {Function} callback
+ * @return {Void}
  */
 function authenticate(username, password, callback) {
     User.findOne({ userName: username }, function (err, user) {
@@ -35,11 +38,15 @@ function authenticate(username, password, callback) {
 passport.use(new BasicStrategy(authenticate));
 
 /**
- * description
- *
+ * Passport middleware to implement basic authentication
+ * @type {Middleware}
  */
 const isAuthenticated = passport.authenticate('basic', { session : false });
 
+/**
+ * This module exports the isAuthenticated passport middlewares
+ * @type {Object}
+ */
 module.exports = {
     isAuthenticated: isAuthenticated,
     authenticate: authenticate

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Module dependencies.
+ * www module. runs the express application
+ * @module www
  */
 
 var app = require('../app');

@@ -4,7 +4,7 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "source": {
-        "include": [ "./routes", "./tests" ],
+        "include": [ "./routes", "./tests", "./models", "./utils", "./bin" ],
         "exclude": [ /* array of paths to exclude */ ],        
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"

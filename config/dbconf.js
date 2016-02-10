@@ -1,3 +1,8 @@
+/**
+ * Database configuration module. Set connection strings to mongodb
+ * for development, test, and production environments
+ * @module config/dbconf
+ */
 "use strict";
 
 const config = {

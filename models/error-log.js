@@ -1,6 +1,16 @@
+/**
+ * application model module.
+ * @module models/error-log
+ */
+"use strict";
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+/**
+ * Mongoose schema for error logs
+ * @type {Schema}
+ */
 const ErrorLogSchema = new Schema({
     message: {
         type: String,
@@ -14,6 +24,10 @@ const ErrorLogSchema = new Schema({
     }
 });
 
+/**
+ * Mongoose model for error logs
+ * @type {Model}
+ */
 const ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
 
 module.exports = ErrorLog;

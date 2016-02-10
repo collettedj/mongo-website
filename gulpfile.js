@@ -1,3 +1,7 @@
+/**
+ * gulpfile module. set up gulp tasks
+ * @module gulpfile 
+ */
 "use strict";
 
 var gulp = require('gulp');

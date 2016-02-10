@@ -5,10 +5,6 @@ const assert = require('chai').assert;
 const models = require('../../models');
 const authenticate = require('../../routes/auth').authenticate;
 
-/**
- * description
- *
- */
 describe("integration: auth", function(){
     beforeEach(function(done){
         const user = new models.User({

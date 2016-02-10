@@ -1,3 +1,9 @@
+/**
+ * Mongoose index module. This module loads all models in the same folder.
+ * It also creates the connection to the mongo database throught the 
+ * config/dbconf.js file. All mongoose models can loaded by using require('./models')
+ * @module models/index
+ */
 "use strict";
 
 const _ = require('lodash');
