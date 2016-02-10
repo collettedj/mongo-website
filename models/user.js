@@ -7,6 +7,7 @@
 const mongoose = require("mongoose");
 var bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
+let User = null;
 
 /**
  * Mongoose sub schema for applications that a user can access
@@ -42,6 +43,11 @@ const UserSchema = new Schema({
 		default:0,
 		required:true,
 	},
+	isLockedOut: {
+		type: Boolean,
+		default:false,
+		required:true,
+	},
 
 
 	apps:[ApplicationUserSchema],
@@ -61,6 +67,26 @@ UserSchema.methods.verifyPassword = function(password, cb) {
     }
     cb(null, isMatch);
   });
+};
+
+/**
+ * increment the badPasswordAttempts when user enters incorrect password
+ *
+ */
+UserSchema.methods.incrementBadPassword = function(cb) {
+	User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, {new:true}, (err, updatedUser) => {
+		if(err){return cb(err);	}
+		
+		if(updatedUser.badPasswordAttempts >= 3){
+			updatedUser.isLockedOut = true;
+			return updatedUser.save((err, lockedUser) => {
+				if(err){return cb(err);	}
+				return cb(null, lockedUser);			
+			});
+		}
+		
+		return cb(null, updatedUser);
+	});
 };
 
 /**
@@ -99,6 +125,6 @@ UserSchema.pre('save', UserSchema.methods.hashPassword);
  * Mongoose user model
  * @type {Model}
  */
-const User = mongoose.model('User', UserSchema);
+User = mongoose.model('User', UserSchema);
 
 module.exports = User;
