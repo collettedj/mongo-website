@@ -16,7 +16,7 @@ describe("integration: user model", function(){
         
         Promise.all([
         	models.User.remove({}),
-        	models.Application.remove({})
+        	models.Client.remove({})
         	])
             .then(() => {
                 done(null);              
@@ -24,8 +24,8 @@ describe("integration: user model", function(){
             .catch(done);
     });
 
-    it("populate application from user", function(done){
-    	const application = models.Application({
+    it("populate client from user", function(done){
+    	const client = models.Client({
     		name: "test app",
     		description: "test app",
     	});
@@ -37,7 +37,7 @@ describe("integration: user model", function(){
     		password:"test1234",
     	});
 
-    	application.save()
+    	client.save()
     		.then(app => {
     			user.apps.push({app:app._id});
     			return user.save();

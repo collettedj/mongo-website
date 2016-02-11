@@ -3,7 +3,7 @@
 
 const assert = require('chai').assert;
 const models = require('../../models');
-const authenticate = require('../../routes/auth').authenticate;
+const authenticate = require('../../controllers/auth').authenticate;
 
 describe("integration: auth", function(){
     beforeEach(function(done){

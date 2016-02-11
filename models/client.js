@@ -1,6 +1,6 @@
 /**
- * application model module.
- * @module models/application
+ * Client model module.
+ * @module models/client
  */
 "use strict";
 
@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 /**
- * Mongoose sub schema for roles in an application
+ * Mongoose sub schema for roles in an Client
  * @type {Schema}
  */
 const RoleSchema = new Schema({
@@ -17,10 +17,10 @@ const RoleSchema = new Schema({
 });
 
 /**
- * Mongoose schema to for applications
+ * Mongoose schema to for Clients
  * @type {Schema}
  */
-const ApplicationSchema = new Schema({
+const ClientSchema = new Schema({
 	name: {
 		type: String,
 		unique: true,
@@ -37,9 +37,9 @@ const ApplicationSchema = new Schema({
 });
 
 /**
- * Mongoose application model
+ * Mongoose Client model
  * @type {Model}
  */
-const Application = mongoose.model('Application', ApplicationSchema);
+const Client = mongoose.model('Client', ClientSchema);
 
-module.exports = Application;
+module.exports = Client;

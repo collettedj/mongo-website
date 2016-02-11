@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const basename = path.basename(module.filename);
-const skipFiles = [basename, "route-base.js", "auth.js"];
+const skipFiles = [basename, "controller-base.js", "auth.js"];
 
 /**
  * @param  {string} baseRoutePath base path for every route.
@@ -22,8 +22,9 @@ function loadRoutes(baseRoutePath, app){
 		})
 		.forEach(function(file) {
 		    const basename = path.basename(file, '.js');
-		    const RouterClass = require('./' + basename);
-		    const router = new RouterClass(app);
+		    console.log(basename);
+		    const ControllerClass = require('./' + basename);
+		    const router = new ControllerClass(app);
 		    app.use(baseRoutePath + basename, router.router);
 		});
 

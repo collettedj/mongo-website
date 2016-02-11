@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
 
-require('./routes/index')('/api/v1/', app);
+require('./controllers')('/api/v1/', app);
 // app.use('/users', users);
 
 // catch 404 and forward to error handler

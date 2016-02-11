@@ -1,6 +1,6 @@
 /**
- * RouteBase module.
- * @module routes/route-base
+ * ControllerBase module.
+ * @module routes/controller-base
  */
 "use strict";
 
@@ -10,13 +10,13 @@ const ModelUtils = require('../utils/model-utils');
 const isAuthenticated = require('./auth').isAuthenticated;
 
 /**
- * RouteBase is a base class for routes that are REST services over a mongoose data model.
+ * ControllerBase is a base class for controllers that are REST services over a mongoose data model.
  */
-class RouteBase{
+class ControllerBase{
 	
 	/**
 	 * @param {object} app This is the express application object
-	 * @param {object} Model The mongoose model that the route will use.
+	 * @param {object} Model The mongoose model that the controller will use.
 	 * @param {object} ErrorLog The mongoose model that is used for logging.
 	 */
 	constructor(app, Model, ErrorLog){
@@ -30,6 +30,7 @@ class RouteBase{
 		if(this.createRoutes){
 			this.createRoutes();	
 		} else {
+			console.log(this.Model)
 			throw new Error("you must define the createRoutes method");
 		}		
 	}
@@ -270,4 +271,4 @@ class RouteBase{
 
 }
 
-module.exports = RouteBase;
+module.exports = ControllerBase;
