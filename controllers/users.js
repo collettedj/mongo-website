@@ -4,13 +4,13 @@
  */
 "use strict";
 
-const ControllerBase = require('./controller-base');
+const ModelControllerBase = require('./model-controller-base');
 const models = require('../models');
 
 /**
  * UserController is a class that creates an express router with GET,POST,PUT,and DELETE.
  */
-class UserController extends ControllerBase {
+class UserController extends ModelControllerBase {
 
 	/**
 	 * @param  {object} app express application object

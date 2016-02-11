@@ -9,9 +9,9 @@ const models = require('../../models');
 describe("integration: user routes", function(){
     beforeEach(function(done){
         const user = new models.User({
-           firstName:"first",
-           lastName:"last",
-           userName:"test",
+           firstname:"first",
+           lastname:"last",
+           username:"test",
            password:"test1234",
         });
         
@@ -62,14 +62,14 @@ describe("integration: user routes", function(){
                     .auth("test", "test1234")
                     .send({
                         user: {
-                            firstName: newFirstName
+                            firstname: newFirstName
                         }
                     })
                     .expect(200)
                     .end(function(err,res){
                        assert.equal(null,err);
                        assert.equal(userId, res.body.user._id);
-                       assert.equal(newFirstName, res.body.user.firstName);
+                       assert.equal(newFirstName, res.body.user.firstname);
                        done(err);
                     });                
             })
@@ -81,18 +81,18 @@ describe("integration: user routes", function(){
             .auth("test", "test1234")
             .send({
                 user: {
-                    firstName:"firstName",
-                    lastName:"lastName",
-                    userName:"postedUser",
+                    firstname:"firstName",
+                    lastname:"lastName",
+                    username:"postedUser",
                     password:"mypassword",
                 }
             })
             .expect(200)
             .end(function(err,res){
                assert.equal(null,err);
-               assert.equal("firstName", res.body.user.firstName);
-               assert.equal("lastName", res.body.user.lastName);
-               assert.equal("postedUser", res.body.user.userName);
+               assert.equal("firstName", res.body.user.firstname);
+               assert.equal("lastName", res.body.user.lastname);
+               assert.equal("postedUser", res.body.user.username);
                assert.notEqual("mypassword", res.body.user.password);
                done(err);
             });

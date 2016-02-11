@@ -8,9 +8,9 @@ describe("integration: user model", function(){
 
 	beforeEach(function(done){
         const user = new models.User({
-           firstName:"first",
-           lastName:"last",
-           userName:"test",
+           firstname:"first",
+           lastname:"last",
+           username:"test",
            password:"test1234",
         });
         
@@ -28,12 +28,16 @@ describe("integration: user model", function(){
     	const client = models.Client({
     		name: "test app",
     		description: "test app",
+    		id:"test_id",
+    		secret:"test_secret",
+    		userId:"test_user_id",
+    		
     	});
 
     	const user = new models.User({
-    		firstName:"first",
-    		lastName:"last",
-    		userName:"username",
+    		firstname:"first",
+    		lastname:"last",
+    		username:"username",
     		password:"test1234",
     	});
 

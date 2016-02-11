@@ -6,7 +6,10 @@
 
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
+var BearerStrategy = require('passport-http-bearer').Strategy
 const User = require('../models').User;
+const Client = require('../models').Client;
+const Token = require('../models').Token;
 
 /**
  * Expresss middlware to implement basic authentication
@@ -16,7 +19,7 @@ const User = require('../models').User;
  * @return {Void}
  */
 function authenticate(username, password, callback) {
-    User.findOne({ userName: username }, function (err, user) {
+    User.findOne({ username: username }, function (err, user) {
         if (err) { return callback(err); }
         
         // No user found with that username
@@ -49,33 +52,48 @@ function authenticate(username, password, callback) {
 
 passport.use(new BasicStrategy(authenticate));
 
-/**
- * Passport middleware to implement basic authentication
- * @type {Middleware}
- */
-const isAuthenticated = passport.authenticate('basic', { session : false });
+passport.use('client-basic', new BasicStrategy(
+  function(username, password, callback) {
+    Client.findOne({ id: username }, function (err, client) {
+      if (err) { return callback(err); }
 
+      // No client found with that id or bad password
+      if (!client || client.secret !== password) { return callback(null, false); }
 
-// const isAuthenticated = function(req, res, next){
-//      passport.authenticate('basic', { session : false }, function(err, user, info){
-//         if(err) { return next(err); }
-        
-//         if(!user){
-//             res.status(401).send(info);
-//         } else {
-//             req.user = user;
-//             next();
-//         }
-//      })(req, res, next);
-// };
+      // Success
+      return callback(null, client);
+    });
+  }
+));
+
+passport.use(new BearerStrategy(
+  function(accessToken, callback) {
+    Token.findOne({value: accessToken }, function (err, token) {
+      if (err) { return callback(err); }
+
+      // No token found
+      if (!token) { return callback(null, false); }
+
+      User.findOne({ _id: token.userId }, function (err, user) {
+        if (err) { return callback(err); }
+
+        // No user found
+        if (!user) { return callback(null, false); }
+
+        // Simple example with no scope
+        callback(null, user, { scope: '*' });
+      });
+    });
+  }
+));
+
 
 /**
  * This module exports the isAuthenticated passport middlewares
  * @type {Object}
  */
-module.exports = {
-    isAuthenticated: isAuthenticated,
-    authenticate: authenticate
-};
+exports.authenticate = authenticate;
 
-
+exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : false });
+exports.isClientAuthenticated = passport.authenticate('client-basic', { session : false });
+exports.isBearerAuthenticated = passport.authenticate('bearer', { session: false });

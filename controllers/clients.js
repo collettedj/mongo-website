@@ -4,13 +4,13 @@
  */
 "use strict";
 
-const ControllerBase = require('./controller-base');
+const ModelControllerBase = require('./model-controller-base');
 const models = require('../models');
 
 /**
  * ClientController is a class that creates an express route with GET,POST,PUT,and DELETE.
  */
-class ClientController extends ControllerBase {
+class ClientController extends ModelControllerBase {
 
 	/**
 	 * @param  {object} app express Client object

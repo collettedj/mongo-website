@@ -8,9 +8,9 @@ const authenticate = require('../../controllers/auth').authenticate;
 describe("integration: auth", function(){
     beforeEach(function(done){
         const user = new models.User({
-           firstName:"first",
-           lastName:"last",
-           userName:"test",
+           firstname:"first",
+           lastname:"last",
+           username:"test",
            password:"test1234",
         });
         
@@ -45,7 +45,7 @@ describe("integration: auth", function(){
                     if(err){ return done(err); }
                     assert.equal(null,err);
                     assert.equal(false, user);
-                    models.User.findOne({userName:"test"})
+                    models.User.findOne({username:"test"})
                         .then(foundUser => {
                             assert.equal(3, foundUser.badPasswordAttempts);
                             assert.equal(true, foundUser.isLockedOut);
@@ -81,7 +81,7 @@ describe("integration: auth", function(){
     
     it("successful login resets bad password attempts", function(done){
 
-        models.User.findOneAndUpdate({ userName: "test" }, { $set: { badPasswordAttempts:2 } }, {new:true} )
+        models.User.findOneAndUpdate({ username: "test" }, { $set: { badPasswordAttempts:2 } }, {new:true} )
             .then(updatedUser => {
                 assert.equal(false, updatedUser.isLockedOut);
                 assert.equal(2, updatedUser.badPasswordAttempts);
