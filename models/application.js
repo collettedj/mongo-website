@@ -19,16 +19,18 @@ const RoleSchema = new Schema({
 const ApplicationSchema = new Schema({
 	name: {
 		type: String,
+		unique: true,
+		required: true,
 	},
 
 	description: {
 		type: String,
+
 	},
 
 	roles:[RoleSchema],
 
 });
-
 
 /**
  * Mongoose application model

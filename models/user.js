@@ -14,7 +14,10 @@ let User = null;
  * @type {Schema}
  */
 const ApplicationUserSchema = new Schema({
-	appId: Schema.Types.ObjectId,
+	app: {
+		type: Schema.Types.ObjectId,
+		ref: "Application",
+	}
 });
 
 /**
