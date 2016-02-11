@@ -7,6 +7,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+/**
+ * Mongoose sub schema for roles in an application
+ * @type {Schema}
+ */
 const RoleSchema = new Schema({
 	name: String,
 	description: String,

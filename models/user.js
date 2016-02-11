@@ -10,6 +10,17 @@ const Schema = mongoose.Schema;
 let User = null;
 
 /**
+ * Mongoose sub schema for roles that a user is a member of
+ * @type {Schema}
+ */
+const ApplicationUserRoleSchema = new Schema({
+	role: {
+		type: Schema.Types.ObjectId,
+		ref: "Application.roles._id"
+	}
+});
+
+/**
  * Mongoose sub schema for applications that a user can access
  * @type {Schema}
  */
@@ -17,7 +28,9 @@ const ApplicationUserSchema = new Schema({
 	app: {
 		type: Schema.Types.ObjectId,
 		ref: "Application",
-	}
+	},
+
+	roles: [ApplicationUserRoleSchema],
 });
 
 /**
@@ -25,7 +38,6 @@ const ApplicationUserSchema = new Schema({
  * @type {Schema}
  */
 const UserSchema = new Schema({
-
 
 	firstName: {
 		type: String,
