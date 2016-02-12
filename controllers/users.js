@@ -4,7 +4,7 @@
  */
 "use strict";
 
-const ModelControllerBase = require('./model-controller-base');
+const ModelControllerBase = require('./base/model-controller-base');
 const models = require('../models');
 
 /**

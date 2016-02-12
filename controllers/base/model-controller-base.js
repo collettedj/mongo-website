@@ -5,7 +5,7 @@
 "use strict";
 
 const _ = require('lodash');
-const ModelUtils = require('../utils/model-utils');
+const ModelUtils = require('../../utils/model-utils');
 const ControllerBase = require('./controller-base');
 
 /**

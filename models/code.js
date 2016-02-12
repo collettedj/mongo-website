@@ -16,13 +16,18 @@ const CodeSchema = new Schema({
         type: String, 
         required: true 
     },
+    
+    redirectUri: { 
+        type: String, 
+        required: true 
+    },    
   
     userId: { 
         type: String, 
         required: true 
     },
     
-    codeId: { 
+    clientId: { 
         type: String, 
         required: true 
     }

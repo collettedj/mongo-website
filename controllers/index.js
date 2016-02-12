@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const basename = path.basename(module.filename);
-const skipFiles = [basename, "controller-base.js", "model-controller-base.js", "auth.js"];
+const skipFiles = [basename, "base", "auth.js"];
 
 /**
  * @param  {string} baseRoutePath base path for every route.

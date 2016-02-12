@@ -6,7 +6,9 @@
 
 const _ = require('lodash');
 const express = require('express');
-const isAuthenticated = require('./auth').isAuthenticated;
+const isAuthenticated = require('../auth').isAuthenticated;
+const isClientAuthenticated = require('../auth').isClientAuthenticated;
+const isBearerAuthenticated = require('../auth').isBearerAuthenticated;
 
 /**
  * ControllerBase is a base class for controllers that are REST services over a mongoose data model.
@@ -23,6 +25,8 @@ class ControllerBase{
 		this.router = express.Router(); 
 		this.ErrorLog = ErrorLog;
 		this.isAuthenticated = isAuthenticated;
+		this.isClientAuthenticated = isClientAuthenticated;
+		this.isBearerAuthenticated = isBearerAuthenticated;
 	}
 	
 	applyControllerToRouter(){

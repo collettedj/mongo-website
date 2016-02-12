@@ -22,7 +22,7 @@ const TokenSchema = new Schema({
         required: true 
     },
     
-    tokenId: { 
+    clientId: { 
         type: String, 
         required: true 
     }

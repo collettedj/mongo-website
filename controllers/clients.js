@@ -4,7 +4,7 @@
  */
 "use strict";
 
-const ModelControllerBase = require('./model-controller-base');
+const ModelControllerBase = require('./base/model-controller-base');
 const models = require('../models');
 
 /**
@@ -26,9 +26,24 @@ class ClientController extends ModelControllerBase {
 	createRoutes(){
 		super.createGetOneRoute();
 		super.createGetManyRoute();
-		super.createPostRoute();
+		// super.createPostRoute();
 		super.createPutRoute();
 		super.createDeleteRoute();
+		
+		this.router.post(this.postRoutePath, this.isAuthenticated, this.setUserIdMiddleware, this.postRouteMiddleware);
+	}
+
+	/**
+	 * set the user id on the body so that it will be set when the model get inserted into the database
+	 *
+	 */
+	get setUserIdMiddleware(){
+		const responsePath = this.modelUtils.dashSingularName;
+		const bodyPath = responsePath;
+		return (req, res, next) => {
+			req.body[bodyPath].userId = req.user._id;
+			next();
+		};
 	}
 
 }
