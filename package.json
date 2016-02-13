@@ -30,6 +30,7 @@
     "morgan": "~1.6.1",
     "nodemon": "^1.8.1",
     "oauth2orize": "^1.2.2",
+    "oauth2orize-openid": "0.0.1",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
     "passport-http-bearer": "^1.0.1",

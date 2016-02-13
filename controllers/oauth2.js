@@ -2,6 +2,7 @@
 
 // Load required packages
 var oauth2orize = require('oauth2orize')
+var oauth2orize_ext = require('oauth2orize-openid') // require extentions.
 var Client = require('../models').Client;
 var Token = require('../models').Token;
 var Code = require('../models').Code;
@@ -33,6 +34,94 @@ server.deserializeClient(function(id, callback) {
     return callback(null, client);
   });
 });
+
+// id_token grant type.
+server.grant(oauth2orize_ext.grant.idToken(function(client, user, done){
+  var id_token;
+  // Do your lookup/token generation.
+  // ... id_token =
+  console.log("idToken");
+  done(null, id_token);
+}));
+
+// 'id_token token' grant type.
+server.grant(oauth2orize_ext.grant.idTokenToken(
+  function(client, user, done){
+    var token;
+    // Do your lookup/token generation.
+    // ... token =
+    console.log("idTokenToken")
+    done(null, token);
+  },
+  function(client, user, done){
+    var id_token;
+    // Do your lookup/token generation.
+    // ... id_token =
+    done(null, id_token);
+  }
+));
+
+// Hybrid Flow
+
+// 'code id_token' grant type.
+server.grant(oauth2orize_ext.grant.codeIdToken(
+  function(client, redirect_uri, user, done){
+    var code;
+    // Do your lookup/token generation.
+    // ... code =
+    console.log("codeIdToken")
+    done(null, code);
+  },
+  function(client, user, done){
+    var id_token;
+    // Do your lookup/token generation.
+    // ... id_token =
+    done(null, id_token);
+  }
+));
+
+// 'code token' grant type.
+server.grant(oauth2orize_ext.grant.codeToken(
+  function(client, user, done){
+    var token;
+    // Do your lookup/token generation.
+    // ... id_token =
+    console.log('code token 1')
+    done(null, token);
+  },
+  function(client, redirect_uri, user, done){
+    var code;
+    // Do your lookup/token generation.
+    // ... code =
+    console.log('code token 2');
+    done(null, code);
+  }
+));
+
+// 'code id_token token' grant type.
+server.grant(oauth2orize_ext.grant.codeIdTokenToken(
+ function(client, user, done){
+    var token;
+    // Do your lookup/token generation.
+    // ... id_token =
+    console.log("codeIdTokenToken 1");
+    done(null, token);
+  },
+  function(client, redirect_uri, user, done){
+    var code;
+    // Do your lookup/token generation.
+    // ... code =
+    console.log("codeIdTokenToken 2");
+    done(null, code);
+  },
+  function(client, user, done){
+    var id_token;
+    // Do your lookup/token generation.
+    // ... id_token =
+    console.log("codeIdTokenToken 3");
+    done(null, id_token);
+  }
+));
 
 // Register supported grant types.
 //
@@ -74,9 +163,9 @@ server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, ca
 server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, callback) {
   Code.findOne({ value: code }, function (err, authCode) {
     if (err) { return callback(err); }
-    if (authCode === undefined) { return callback(null, false); }
+    if (authCode === undefined  || authCode === null) { return callback(null, false); }
     if (client._id.toString() !== authCode.clientId) { return callback(null, false); }
-    if (redirectUri !== authCode.redirectUri) { return callback(null, false); }
+    if (redirectUri !== authCode.redirectUri) { return callback(null, false); } 
 
     // Delete auth code now that it has been used
     authCode.remove(function (err) {
@@ -156,7 +245,6 @@ middleware.authorization = [
   server.authorization(function(clientId, redirectUri, callback) {
     Client.findOne({ id: clientId }, function (err, client) {
       if (err) { return callback(err); }
-        console.log("got here", redirectUri);
       return callback(null, client, redirectUri);
     });
   }),
