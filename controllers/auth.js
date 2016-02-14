@@ -6,14 +6,28 @@
 
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
-var BearerStrategy = require('passport-http-bearer').Strategy
+const BearerStrategy = require('passport-http-bearer').Strategy;
 const User = require('../models').User;
 const Client = require('../models').Client;
 const Token = require('../models').Token;
 
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id)
+        .then(function(user){
+            done(null, user);
+        })
+        .catch(function(error){
+            done(error, null);
+        });
+});
+
 /**
  * Expresss middlware to implement basic authentication
- * @param  {string} username 
+ * @param  {string} username
  * @param  {string} password
  * @param  {Function} callback
  * @return {Void}
@@ -21,25 +35,25 @@ const Token = require('../models').Token;
 function authenticate(username, password, callback) {
     User.findOne({ username: username }, function (err, user) {
         if (err) { return callback(err); }
-        
+
         // No user found with that username
         if (!user) { return callback(null, false, "could not find user or password"); }
-        
+
         // User has been locked out
         if(user.isLockedOut) { return callback(null, false, "your account has been locked out"); }
-        
+
         // Make sure the password is correct
         user.verifyPassword(password, function(err, isMatch) {
             if (err) { return callback(err); }
 
             // Password did not match
-            if (!isMatch) { 
+            if (!isMatch) {
                 return user.incrementBadPasswordAttempts((err, updatedUser) => {
                     if (err) { return callback(err); }
                     return callback(null, false, "could not find user or password");
                 });
             }
-            
+
             // Success
             return user.resetBadPasswordAttempts((err, updatedUser) => {
                     if (err) { return callback(err); }
@@ -94,6 +108,6 @@ passport.use(new BearerStrategy(
  */
 exports.authenticate = authenticate;
 
-exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : false });
-exports.isClientAuthenticated = passport.authenticate('client-basic', { session : false });
-exports.isBearerAuthenticated = passport.authenticate('bearer', { session: false });
+exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : true });
+exports.isClientAuthenticated = passport.authenticate('client-basic', { session : true });
+exports.isBearerAuthenticated = passport.authenticate('bearer', { session: true });
