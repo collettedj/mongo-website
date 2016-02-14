@@ -30,7 +30,12 @@ const CodeSchema = new Schema({
     clientId: { 
         type: String, 
         required: true 
-    }
+    },
+
+    scope: [{
+        type:String,
+        required: true
+    }]
 });
 
 /**

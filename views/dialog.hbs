@@ -1,5 +1,7 @@
 <p>Hi {{user.username}}!</p>
 <p><b>{{client.name}}</b> is requesting <b>full access</b> to your account.</p>
+
+<p>{{scope}}</p>
 <p>Do you approve?</p>
 
 <form action="/api/v1/oauth2/authorize" method="post">

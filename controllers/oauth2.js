@@ -1,15 +1,18 @@
 "use strict";
 
 // Load required packages
-var oauth2orize = require('oauth2orize')
-var oauth2orize_ext = require('oauth2orize-openid') // require extentions.
-var Client = require('../models').Client;
-var Token = require('../models').Token;
-var Code = require('../models').Code;
-var ErrorLog = require('../models').ErrorLog;
+const oauth2orize = require('oauth2orize')
+const oauth2orize_ext = require('oauth2orize-openid') // require extentions.
+const jwt = require('jwt-simple');
+const uuid = require('node-uuid');
+const config = require('../config/authconf');
+const Client = require('../models').Client;
+const Token = require('../models').Token;
+const Code = require('../models').Code;
+const ErrorLog = require('../models').ErrorLog;
 
 // Create OAuth 2.0 server
-var server = oauth2orize.createServer();
+const server = oauth2orize.createServer();
 
 // Register serialialization and deserialization functions.
 //
@@ -137,13 +140,14 @@ server.grant(oauth2orize_ext.grant.codeIdTokenToken(
 // the application.  The application issues a code, which is bound to these
 // values, and will be exchanged for an access token.
 
-server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, callback) {
+server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, areq, callback) {
   // Create a new authorization code
   var code = new Code({
     value: uid(16),
     clientId: client._id,
     redirectUri: redirectUri,
-    userId: user._id
+    userId: user._id,
+    scope: areq.scope
   });
 
   // Save the auth code and check for errors
@@ -178,15 +182,36 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
         userId: authCode.userId
       });
 
+      let jwtstr = null;
+      try{
+        const now = new Date();
+        jwtstr = jwt.encode({
+            'aud': client.clientId,
+            'exp': now + config.idTokenTTL,
+            'sub': uuid.v4(),
+            'iss': config.baseUrl,
+            'nonce': "none"
+        }, client.secret);        
+      }
+      catch(err){
+        console.log(err.stack);
+      }
+
+
       // Save the access token and check for errors
       token.save(function (err) {
         if (err) { return callback(err); }
 
-        callback(null, token);
+        callback(null, token, null, {id_token:jwtstr});
       });
     });
   });
 }));
+
+// function issueIDToken(client, user, done) {
+//     debug('Issuing ID Token');
+
+// }
 
 /**
  * Return a unique identifier with the given `len`.
@@ -242,14 +267,14 @@ function getRandomInt(min, max) {
 const middleware = {};
 
 middleware.authorization = [
-  server.authorization(function(clientId, redirectUri, callback) {
+  server.authorization(function(clientId, redirectUri, scope, type, callback) {
     Client.findOne({ id: clientId }, function (err, client) {
       if (err) { return callback(err); }
       return callback(null, client, redirectUri);
     });
   }),
   function(req, res){
-    res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user.toJSON(), client: req.oauth2.client.toJSON() });
+    res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user.toJSON(), client: req.oauth2.client.toJSON(), scope: req.oauth2.req.scope });
   }
 ]
 
