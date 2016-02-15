@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+"use strict";
 /**
  * www module. runs the express application
  * @module www
@@ -92,4 +92,4 @@ function onListening() {
 
 process.on('uncaughtException', function (err) {
   console.log(err);
-})
+});

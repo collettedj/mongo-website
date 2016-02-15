@@ -15,7 +15,7 @@ class ClientController extends ModelControllerBase {
 	/**
 	 * @param  {object} app express Client object
 	 */
-	constructor(app){ 
+	constructor(app){
 		super(app, models.Client, models.ErrorLog);
 	}
 
@@ -29,7 +29,7 @@ class ClientController extends ModelControllerBase {
 		// super.createPostRoute();
 		super.createPutRoute();
 		super.createDeleteRoute();
-		
+
 		this.router.post(this.postRoutePath, this.isAuthenticated, this.setUserIdMiddleware, this.postRouteMiddleware);
 	}
 
