@@ -1,8 +1,8 @@
 "use strict";
 
 // Load required packages
-const oauth2orize = require('oauth2orize')
-const oauth2orize_ext = require('oauth2orize-openid') // require extentions.
+const oauth2orize = require('oauth2orize');
+const oauth2orize_ext = require('oauth2orize-openid'); // require extentions.
 const jwt = require('jwt-simple');
 const uuid = require('node-uuid');
 const config = require('../config/authconf');
@@ -53,7 +53,7 @@ server.grant(oauth2orize_ext.grant.idTokenToken(
     var token;
     // Do your lookup/token generation.
     // ... token =
-    console.log("idTokenToken")
+    console.log("idTokenToken");
     done(null, token);
   },
   function(client, user, done){
@@ -72,7 +72,7 @@ server.grant(oauth2orize_ext.grant.codeIdToken(
     var code;
     // Do your lookup/token generation.
     // ... code =
-    console.log("codeIdToken")
+    console.log("codeIdToken");
     done(null, code);
   },
   function(client, user, done){
@@ -89,7 +89,7 @@ server.grant(oauth2orize_ext.grant.codeToken(
     var token;
     // Do your lookup/token generation.
     // ... id_token =
-    console.log('code token 1')
+    console.log('code token 1');
     done(null, token);
   },
   function(client, redirect_uri, user, done){
@@ -169,7 +169,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
     if (err) { return callback(err); }
     if (authCode === undefined  || authCode === null) { return callback(null, false); }
     if (client._id.toString() !== authCode.clientId) { return callback(null, false); }
-    if (redirectUri !== authCode.redirectUri) { return callback(null, false); } 
+    if (redirectUri !== authCode.redirectUri) { return callback(null, false); }
 
     // Delete auth code now that it has been used
     authCode.remove(function (err) {
@@ -191,7 +191,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
             'sub': uuid.v4(),
             'iss': config.baseUrl,
             'nonce': "none"
-        }, client.secret);        
+        }, client.secret);
       }
       catch(err){
         console.log(err.stack);
@@ -214,28 +214,6 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
 // }
 
 /**
- * Return a unique identifier with the given `len`.
- *
- *     utils.uid(10);
- *     // => "FDaS435D2z"
- *
- * @param {Number} len
- * @return {String}
- * @api private
- */
-function uid (len) {
-  var buf = []
-    , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    , charlen = chars.length;
-
-  for (var i = 0; i < len; ++i) {
-    buf.push(chars[getRandomInt(0, charlen - 1)]);
-  }
-
-  return buf.join('');
-};
-
-/**
  * Return a random int, used by `utils.uid()`
  *
  * @param {Number} min
@@ -247,6 +225,30 @@ function uid (len) {
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+/**
+ * Return a unique identifier with the given `len`.
+ *
+ *     utils.uid(10);
+ *     // => "FDaS435D2z"
+ *
+ * @param {Number} len
+ * @return {String}
+ * @api private
+ */
+function uid (len) {
+  var buf = [],
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+}
+
+
 
 // user authorization endpoint
 //
@@ -262,7 +264,7 @@ function getRandomInt(min, max) {
 // the application's responsibility to authenticate the user and render a dialog
 // to obtain their approval (displaying details about the client requesting
 // authorization).  We accomplish that here by routing through `ensureLoggedIn()`
-// first, and rendering the `dialog` view. 
+// first, and rendering the `dialog` view.
 
 const middleware = {};
 
@@ -276,7 +278,7 @@ middleware.authorization = [
   function(req, res){
     res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user.toJSON(), client: req.oauth2.client.toJSON(), scope: req.oauth2.req.scope });
   }
-]
+];
 
 // user decision endpoint
 //
@@ -287,7 +289,7 @@ middleware.authorization = [
 
 middleware.decision = [
   server.decision()
-]
+];
 
 // token endpoint
 //
@@ -307,7 +309,7 @@ class UserController extends ControllerBase {
 	/**
 	 * @param  {object} app express application object
 	 */
-	constructor(app){ 
+	constructor(app){
 		super(app, ErrorLog);
 	}
 
@@ -319,7 +321,7 @@ class UserController extends ControllerBase {
         // Create endpoint handlers for oauth2 authorize
         this.router.get('/authorize',this.isAuthenticated, middleware.authorization);
         this.router.post('/authorize',this.isAuthenticated, middleware.decision);
-        
+
         // Create endpoint handlers for oauth2 token
         this.router.post('/token', this.isClientAuthenticated, middleware.token);
 

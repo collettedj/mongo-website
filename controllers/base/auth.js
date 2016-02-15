@@ -6,10 +6,11 @@
 
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
+const LocalStrategy = require('passport-local').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
-const User = require('../models').User;
-const Client = require('../models').Client;
-const Token = require('../models').Token;
+const User = require('../../models').User;
+const Client = require('../../models').Client;
+const Token = require('../../models').Token;
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -65,6 +66,7 @@ function authenticate(username, password, callback) {
 }
 
 passport.use(new BasicStrategy(authenticate));
+// passport.use(new LocalStrategy(authenticate));
 
 passport.use('client-basic', new BasicStrategy(
   function(username, password, callback) {

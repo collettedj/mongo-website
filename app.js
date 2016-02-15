@@ -34,13 +34,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use express session support since OAuth2orize requires it
-app.use(session({ 
+app.use(session({
   secret: 'mongo_site_secret_key',
   saveUninitialized: true,
   resave: true
 }));
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 require('./controllers')('/api/v1/', app);
 
