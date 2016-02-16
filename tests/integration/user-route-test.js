@@ -14,17 +14,17 @@ describe("integration: user routes", function(){
            username:"test",
            password:"test1234",
         });
-        
+
         models.User.remove({})
             .then(() => {
                 return user.save()
                     .then(() => {
                         done(null);
-                    });              
+                    });
             })
             .catch(done);
     });
-    
+
     it("get many users", function(done){
         request.get('/api/v1/users')
             .auth("test", "test1234")
@@ -35,7 +35,7 @@ describe("integration: user routes", function(){
                done(err);
             });
     });
-    
+
     it("get one user", function(done){
         models.User.find()
             .then(users => {
@@ -47,14 +47,14 @@ describe("integration: user routes", function(){
                        assert.equal(null,err);
                        assert.equal(userId, res.body.user._id);
                        done(err);
-                    });                
+                    });
             })
             .catch(done);
     });
-    
+
     it("put user", function(done){
         const newFirstName = "newFirstName";
-        
+
         models.User.find()
             .then(users => {
                 const userId = users[0]._id;
@@ -71,11 +71,11 @@ describe("integration: user routes", function(){
                        assert.equal(userId, res.body.user._id);
                        assert.equal(newFirstName, res.body.user.firstname);
                        done(err);
-                    });                
+                    });
             })
             .catch(done);
-    });  
-    
+    });
+
     it("post user", function(done){
         request.post('/api/v1/users')
             .auth("test", "test1234")
@@ -89,15 +89,15 @@ describe("integration: user routes", function(){
             })
             .expect(200)
             .end(function(err,res){
-               assert.equal(null,err);
-               assert.equal("firstName", res.body.user.firstname);
-               assert.equal("lastName", res.body.user.lastname);
-               assert.equal("postedUser", res.body.user.username);
-               assert.notEqual("mypassword", res.body.user.password);
-               done(err);
+                assert.equal(null,err);
+                assert.equal("firstName", res.body.user.firstname);
+                assert.equal("lastName", res.body.user.lastname);
+                assert.equal("postedUser", res.body.user.username);
+                assert.notEqual("mypassword", res.body.user.password);
+                done(err);
             });
-    });  
-    
+    });
+
     it("delete user", function(done){
         models.User.find()
             .then(users => {
@@ -107,7 +107,7 @@ describe("integration: user routes", function(){
                     .expect(204,done);
             })
             .catch(done);
-    });      
-    
+    });
+
 
 });

@@ -91,5 +91,6 @@ function onListening() {
 }
 
 process.on('uncaughtException', function (err) {
+  console.log('uncaughtException *sdfsdfsdfsdfsdfsdfsdf*&&&&&&&')
   console.log(err);
 });
