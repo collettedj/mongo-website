@@ -62,7 +62,8 @@ class ModelControllerBase extends ControllerBase{
 					const result = {
 						[responsePath]: model
 					};
-				  	res.json(result);
+				  	req.modelResult = result;
+				  	next();
 				})
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
@@ -85,7 +86,8 @@ class ModelControllerBase extends ControllerBase{
 					const result = {
 						[responsePath]: savedModel
 					};
-				  	res.json(result);
+				  	req.modelResult = result;
+				  	next();
 				})
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
@@ -112,7 +114,8 @@ class ModelControllerBase extends ControllerBase{
 					const result = {
 						[responsePath]: savedModel
 					};
-				  	res.json(result);
+				  	req.modelResult = result;
+				  	next();
 				})
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
@@ -136,7 +139,7 @@ class ModelControllerBase extends ControllerBase{
 					if(!deleteModel){
 						return res.status(404).send(`${this.Model.modelName} ${body._id} not found`);
 					}
-				  	res.sendStatus(204);
+				  	next();
 				})
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
@@ -147,6 +150,12 @@ class ModelControllerBase extends ControllerBase{
 	get resultMiddleware(){
 		return function(req, res){
 			res.json(req.modelResult);
+		}
+	}
+
+	get deleteResultMiddleware(){
+		return function(req, res){
+			res.sendStatus(204);
 		}
 	}
 
@@ -163,7 +172,7 @@ class ModelControllerBase extends ControllerBase{
 	 * @params {object} has an authenticate option to make the route require authentication
 	 */
 	createGetManyRoute(options){
-		this._buildRoute("get", this.getManyRoutePath, this.getManyMiddleware, options);
+		this._buildRoute("get", this.getManyRoutePath, [this.getManyMiddleware, this.resultMiddleware], options);
 	}
 
  	/**
@@ -171,7 +180,7 @@ class ModelControllerBase extends ControllerBase{
 	 * @params {object} has an authenticate option to make the route require authentication
 	 */
 	createPostRoute(options){
-		this._buildRoute("post", this.postRoutePath, this.postRouteMiddleware, options);
+		this._buildRoute("post", this.postRoutePath, [this.postRouteMiddleware, this.resultMiddleware], options);
 	}
 
  	/**
@@ -179,7 +188,7 @@ class ModelControllerBase extends ControllerBase{
 	 * @params {object} has an authenticate option to make the route require authentication
 	 */
 	createPutRoute(options){
-		this._buildRoute("put", this.putRoutePath, this.putRouteMiddleware, options );
+		this._buildRoute("put", this.putRoutePath, [this.putRouteMiddleware, this.resultMiddleware], options );
 	}
 
  	/**
@@ -187,7 +196,7 @@ class ModelControllerBase extends ControllerBase{
 	 * @params {object} has an authenticate option to make the route require authentication
 	 */
 	createDeleteRoute(options){
-		this._buildRoute("delete", this.deleteRoutePath, this.deleteRouteMiddleware, options );
+		this._buildRoute("delete", this.deleteRoutePath, [this.deleteRouteMiddleware, this.deleteResultMiddleware], options );
 	}
 
 }

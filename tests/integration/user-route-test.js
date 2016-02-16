@@ -45,6 +45,7 @@ describe("integration: user routes", function(){
                     .expect(200)
                     .end(function(err,res){
                        assert.equal(null,err);
+                       assert(Array.isArray(res.body.clients));
                        assert.equal(userId, res.body.user._id);
                        done(err);
                     });
