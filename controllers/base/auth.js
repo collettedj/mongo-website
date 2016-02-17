@@ -65,50 +65,49 @@ function authenticate(username, password, callback) {
     });
 }
 
+function authenticateClient(username, password, callback) {
+  Client.findOne({ clientId: username }, function (err, client) {
+    if (err) { return callback(err); }
+
+    // No client found with that id or bad password
+    if (!client || client.secret !== password) { return callback(null, false); }
+
+    // Success
+    return callback(null, client);
+  });
+}
+
+function authenticateAccessToken(accessToken, callback) {
+  Token.findOne({value: accessToken }, function (err, token) {
+    if (err) { return callback(err); }
+
+    // No token found
+    if (!token) { return callback(null, false); }
+
+    User.findOne({ _id: token.userId }, function (err, user) {
+      if (err) { return callback(err); }
+
+      // No user found
+      if (!user) { return callback(null, false); }
+
+      // Simple example with no scope
+      callback(null, user, { scope: '*' });
+    });
+  });
+}
+
 passport.use(new BasicStrategy(authenticate));
 // passport.use(new LocalStrategy(authenticate));
-
-passport.use('client-basic', new BasicStrategy(
-  function(username, password, callback) {
-    Client.findOne({ id: username }, function (err, client) {
-      if (err) { return callback(err); }
-
-      // No client found with that id or bad password
-      if (!client || client.secret !== password) { return callback(null, false); }
-
-      // Success
-      return callback(null, client);
-    });
-  }
-));
-
-passport.use(new BearerStrategy(
-  function(accessToken, callback) {
-    Token.findOne({value: accessToken }, function (err, token) {
-      if (err) { return callback(err); }
-
-      // No token found
-      if (!token) { return callback(null, false); }
-
-      User.findOne({ _id: token.userId }, function (err, user) {
-        if (err) { return callback(err); }
-
-        // No user found
-        if (!user) { return callback(null, false); }
-
-        // Simple example with no scope
-        callback(null, user, { scope: '*' });
-      });
-    });
-  }
-));
-
+passport.use('client-basic', new BasicStrategy(authenticateClient));
+passport.use(new BearerStrategy(authenticateAccessToken));
 
 /**
  * This module exports the isAuthenticated passport middlewares
  * @type {Object}
  */
 exports.authenticate = authenticate;
+exports.authenticateClient = authenticateClient;
+exports.authenticateAccessToken = authenticateAccessToken;
 
 exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : true });
 exports.isClientAuthenticated = passport.authenticate('client-basic', { session : true });

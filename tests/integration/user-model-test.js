@@ -13,13 +13,13 @@ describe("integration: user model", function(){
            username:"test",
            password:"test1234",
         });
-        
+
         Promise.all([
         	models.User.remove({}),
         	models.Client.remove({})
         	])
             .then(() => {
-                done(null);              
+                done(null);
             })
             .catch(done);
     });
@@ -28,10 +28,10 @@ describe("integration: user model", function(){
     	const client = models.Client({
     		name: "test app",
     		description: "test app",
-    		id:"test_id",
+    		clientId:"test_id",
     		secret:"test_secret",
     		userId:"test_user_id",
-    		
+
     	});
 
     	const user = new models.User({
