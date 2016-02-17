@@ -32,7 +32,7 @@ const ClientSchema = new Schema({
 
 	},
 
-	clientId: {
+	clientIdentifier: {
 		type: String,
 		required: true
 	},

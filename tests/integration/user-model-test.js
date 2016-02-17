@@ -28,7 +28,7 @@ describe("integration: user model", function(){
     	const client = models.Client({
     		name: "test app",
     		description: "test app",
-    		clientId:"test_id",
+    		clientIdentifier:"test_id",
     		secret:"test_secret",
     		userId:"test_user_id",
     	});

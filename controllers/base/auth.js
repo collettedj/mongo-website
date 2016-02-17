@@ -66,7 +66,7 @@ function authenticate(username, password, callback) {
 }
 
 function authenticateClient(username, password, callback) {
-  Client.findOne({ clientId: username }, function (err, client) {
+  Client.findOne({ clientIdentifier: username }, function (err, client) {
     if (err) { return callback(err); }
 
     // No client found with that id or bad password

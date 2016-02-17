@@ -20,7 +20,7 @@ describe("integration: auth", function(){
             name: "test app",
             description: "test app",
             secret:"test_secret",
-            clientId:"test_id",
+            clientIdentifier:"test_id",
         });
 
         const token = models.Token({

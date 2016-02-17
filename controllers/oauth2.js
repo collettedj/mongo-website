@@ -11,6 +11,41 @@ const Token = require('../models').Token;
 const Code = require('../models').Code;
 const ErrorLog = require('../models').ErrorLog;
 
+/**
+ * Return a random int, used by `utils.uid()`
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @return {Number}
+ * @api private
+ */
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * Return a unique identifier with the given `len`.
+ *
+ *     utils.uid(10);
+ *     // => "FDaS435D2z"
+ *
+ * @param {Number} len
+ * @return {String}
+ * @api private
+ */
+function uid (len) {
+  var buf = [],
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+}
+
 // Create OAuth 2.0 server
 const server = oauth2orize.createServer();
 
@@ -38,93 +73,6 @@ server.deserializeClient(function(id, callback) {
   });
 });
 
-// id_token grant type.
-server.grant(oauth2orize_ext.grant.idToken(function(client, user, done){
-  var id_token;
-  // Do your lookup/token generation.
-  // ... id_token =
-  console.log("idToken");
-  done(null, id_token);
-}));
-
-// 'id_token token' grant type.
-server.grant(oauth2orize_ext.grant.idTokenToken(
-  function(client, user, done){
-    var token;
-    // Do your lookup/token generation.
-    // ... token =
-    console.log("idTokenToken");
-    done(null, token);
-  },
-  function(client, user, done){
-    var id_token;
-    // Do your lookup/token generation.
-    // ... id_token =
-    done(null, id_token);
-  }
-));
-
-// Hybrid Flow
-
-// 'code id_token' grant type.
-server.grant(oauth2orize_ext.grant.codeIdToken(
-  function(client, redirect_uri, user, done){
-    var code;
-    // Do your lookup/token generation.
-    // ... code =
-    console.log("codeIdToken");
-    done(null, code);
-  },
-  function(client, user, done){
-    var id_token;
-    // Do your lookup/token generation.
-    // ... id_token =
-    done(null, id_token);
-  }
-));
-
-// 'code token' grant type.
-server.grant(oauth2orize_ext.grant.codeToken(
-  function(client, user, done){
-    var token;
-    // Do your lookup/token generation.
-    // ... id_token =
-    console.log('code token 1');
-    done(null, token);
-  },
-  function(client, redirect_uri, user, done){
-    var code;
-    // Do your lookup/token generation.
-    // ... code =
-    console.log('code token 2');
-    done(null, code);
-  }
-));
-
-// 'code id_token token' grant type.
-server.grant(oauth2orize_ext.grant.codeIdTokenToken(
- function(client, user, done){
-    var token;
-    // Do your lookup/token generation.
-    // ... id_token =
-    console.log("codeIdTokenToken 1");
-    done(null, token);
-  },
-  function(client, redirect_uri, user, done){
-    var code;
-    // Do your lookup/token generation.
-    // ... code =
-    console.log("codeIdTokenToken 2");
-    done(null, code);
-  },
-  function(client, user, done){
-    var id_token;
-    // Do your lookup/token generation.
-    // ... id_token =
-    console.log("codeIdTokenToken 3");
-    done(null, id_token);
-  }
-));
 
 // Register supported grant types.
 //
@@ -212,43 +160,6 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
 //     debug('Issuing ID Token');
 
 // }
-
-/**
- * Return a random int, used by `utils.uid()`
- *
- * @param {Number} min
- * @param {Number} max
- * @return {Number}
- * @api private
- */
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/**
- * Return a unique identifier with the given `len`.
- *
- *     utils.uid(10);
- *     // => "FDaS435D2z"
- *
- * @param {Number} len
- * @return {String}
- * @api private
- */
-function uid (len) {
-  var buf = [],
-    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    charlen = chars.length;
-
-  for (var i = 0; i < len; ++i) {
-    buf.push(chars[getRandomInt(0, charlen - 1)]);
-  }
-
-  return buf.join('');
-}
-
-
 
 // user authorization endpoint
 //
