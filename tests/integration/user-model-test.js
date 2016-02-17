@@ -31,7 +31,6 @@ describe("integration: user model", function(){
     		clientId:"test_id",
     		secret:"test_secret",
     		userId:"test_user_id",
-
     	});
 
     	const user = new models.User({
