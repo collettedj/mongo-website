@@ -6,6 +6,7 @@ const models = require('../../models');
 const authenticate = require('../../controllers/base/auth').authenticate;
 const authenticateClient = require('../../controllers/base/auth').authenticateClient;
 const authenticateAccessToken = require('../../controllers/base/auth').authenticateAccessToken;
+const oauth2mid = require('../../controllers/base/oauth2-middleware');
 
 describe("integration: auth", function(){
     beforeEach(function(done){
@@ -162,6 +163,35 @@ describe("integration: auth", function(){
                 assert.equal(false, client);
                 done(err);
             });
+        });
+    });
+
+    describe("oauth2", function(){
+        it("grant code success", function(done){
+            Promise.all([models.Client.findOne({}),
+                models.User.findOne({})])
+                .then(res => {
+                    const client = res[0];
+                    const user = res[1];
+                    return new Promise(function(resolve,reject){
+                        oauth2mid.grantCode(client, "http://localhost:/3000", user, {}, {}, function(err, code){
+                            if(err){
+                                return reject(err);
+                            }
+                            return resolve(code);
+                        });
+                    });
+                })
+                .then(code => {
+                    assert.notEqual(null, code);
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                });
+
+
+
         });
     });
 
