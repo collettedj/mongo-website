@@ -17,7 +17,7 @@ const env = process.env.NODE_ENV || "development";
 const mongoUrl = dbconf.mongo[env];
 
 if(!mongoUrl){
-	throw new Error(`Could not get mongodb connection string for environment ${env}`);
+	throw Error(`Could not get mongodb connection string for environment ${env}`);
 }
 
 

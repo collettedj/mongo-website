@@ -97,7 +97,7 @@ function authenticateAccessToken(accessToken, callback) {
 }
 
 passport.use(new BasicStrategy(authenticate));
-// passport.use(new LocalStrategy(authenticate));
+passport.use(new LocalStrategy(authenticate));
 passport.use('client-basic', new BasicStrategy(authenticateClient));
 passport.use(new BearerStrategy(authenticateAccessToken));
 
@@ -109,6 +109,6 @@ exports.authenticate = authenticate;
 exports.authenticateClient = authenticateClient;
 exports.authenticateAccessToken = authenticateAccessToken;
 
-exports.isAuthenticated = passport.authenticate(['basic', 'bearer'], { session : true });
+exports.isAuthenticated = passport.authenticate(['local', 'basic', 'bearer'], { session : true });
 exports.isClientAuthenticated = passport.authenticate('client-basic', { session : true });
 exports.isBearerAuthenticated = passport.authenticate('bearer', { session: true });

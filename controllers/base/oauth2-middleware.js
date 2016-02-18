@@ -134,11 +134,12 @@ function exchangeCode(client, code, redirectUri, callback) {
       let jwtstr = null;
       try{
         const now = new Date();
+        const expDate = new Date(now.getTime() + config.auth.idTokenTTL);
         jwtstr = jwt.encode({
-            'aud': client.clientId,
-            'exp': now + config.idTokenTTL,
+            'aud': client.clientIdentifier,
+            'exp': expDate,
             'sub': uuid.v4(),
-            'iss': config.baseUrl,
+            'iss': config.auth.baseUrl,
             'nonce': "none"
         }, client.secret);
       }
@@ -150,7 +151,7 @@ function exchangeCode(client, code, redirectUri, callback) {
       token.save(function (err) {
         if (err) { return callback(err); }
 
-        callback(null, token, null, {id_token:jwtstr});
+        callback(null, token.value, null, jwtstr);
       });
     });
   });

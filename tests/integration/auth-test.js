@@ -2,6 +2,7 @@
 "use strict";
 
 const assert = require('chai').assert;
+const jwt = require('jwt-simple');
 const models = require('../../models');
 const authenticate = require('../../controllers/base/auth').authenticate;
 const authenticateClient = require('../../controllers/base/auth').authenticateClient;
@@ -23,6 +24,14 @@ describe("integration: auth", function(){
             secret:"test_secret",
             clientIdentifier:"test_id",
         });
+        
+        const code = models.Code({
+            value: "test_code",
+            redirectUri: "http://localhost:3000",
+            // userId:
+            // clientId:
+            scope:['openid', 'profile']
+        });
 
         const token = models.Token({
             value: "test_token_value",
@@ -31,6 +40,7 @@ describe("integration: auth", function(){
         models.User.remove({})
             .then( () => models.Client.remove({}) )
             .then( () => models.Token.remove({}) )
+            .then( () => models.Code.remove({}) )
             .then( () => {
                 return user.save();
             })
@@ -40,7 +50,9 @@ describe("integration: auth", function(){
                 .then( savedClient => {
                     token.userId = savedUser._id;
                     token.clientId = savedClient._id;
-                    return token.save();
+                    code.userId = savedUser._id;
+                    code.clientId = savedClient._id;
+                    return Promise.all([token.save(), code.save()]);
                 });
             })
 
@@ -189,10 +201,87 @@ describe("integration: auth", function(){
                 .catch(err => {
                     done(err);
                 });
-
-
-
         });
+        
+        function exchangeCodePromise(client, clientIdentifier, redirectUri){
+            return new Promise(function(resolve,reject){
+                oauth2mid.exchangeCode(client, clientIdentifier, redirectUri, function(err, accessToken, refreshToken, idToken){
+                    if(err){
+                        return reject(err);
+                    }
+                    return resolve({
+                        client:client.toJSON(),
+                        accessToken,
+                        refreshToken,
+                        idToken
+                    });
+                });
+            });                
+        }        
+        
+        it("exchange code success", function(done){
+            Promise.all([models.Client.findOne({}),
+                models.User.findOne({})])
+                .then(res => {
+                    const client = res[0];
+                    const user = res[1];
+                    return exchangeCodePromise(client, "test_code", "http://localhost:3000");
+                })
+                .then(tokens => {
+                    assert.notEqual(null, tokens.accessToken);
+                    assert.equal(null, tokens.refreshToken);
+                    assert.notEqual(null, tokens.idToken);
+                    const date = new Date();
+                    const decodedIdToken = jwt.decode(tokens.idToken, tokens.client.secret);
+                    
+                    assert.equal(tokens.client.clientIdentifier, decodedIdToken.aud);
+                    assert.isBelow(date, new Date(decodedIdToken.exp));
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                });
+        });
+        
+        it("exchange code bad client code", function(done){
+            Promise.all([models.Client.findOne({}),
+                models.User.findOne({})])
+                .then(res => {
+                    const client = res[0];
+                    const user = res[1];
+                    return exchangeCodePromise(client, "bad_code", "http://localhost:3000");
+                })
+                .then(tokens => {
+                    assert.equal(false, tokens.accessToken);
+                    assert.equal(undefined, tokens.refreshToken);
+                    assert.equal(undefined, tokens.idToken);
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                });
+        });
+        
+        it("exchange code bad redirect uri", function(done){
+            Promise.all([models.Client.findOne({}),
+                models.User.findOne({})])
+                .then(res => {
+                    const client = res[0];
+                    const user = res[1];
+                    return exchangeCodePromise(client, "test_code", "http://localhost:4444");
+                })
+                .then(tokens => {
+                    assert.equal(false, tokens.accessToken);
+                    assert.equal(undefined, tokens.refreshToken);
+                    assert.equal(undefined, tokens.idToken);
+                    done();
+                })
+                .catch(err => {
+                    done(err);
+                });
+        });         
+        
+        
     });
 
 

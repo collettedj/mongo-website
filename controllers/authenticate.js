@@ -20,7 +20,7 @@ class AuthenticateController extends ControllerBase {
     createRoutes(){
         // Create endpoint handlers for oauth2 authorize
         this.router.post('/login', function(req, res, next) {
-              passport.authenticate('basic', function(err, user, info) {
+              passport.authenticate('local', function(err, user, info) {
                     if (err) {
                         return next(err);
                     }
