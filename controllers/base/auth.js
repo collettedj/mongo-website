@@ -109,6 +109,12 @@ exports.authenticate = authenticate;
 exports.authenticateClient = authenticateClient;
 exports.authenticateAccessToken = authenticateAccessToken;
 
-exports.isAuthenticated = passport.authenticate(['local', 'basic', 'bearer'], { session : true });
+exports.isAuthenticated = function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    passport.authenticate(['basic', 'bearer'], {session: false})(req, res, next);
+};
+
 exports.isClientAuthenticated = passport.authenticate('client-basic', { session : true });
 exports.isBearerAuthenticated = passport.authenticate('bearer', { session: true });

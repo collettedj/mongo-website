@@ -30,7 +30,7 @@ class ClientController extends ModelControllerBase {
 		super.createPutRoute();
 		super.createDeleteRoute();
 
-		this.router.post(this.postRoutePath, this.isAuthenticated, this.setUserIdMiddleware, this.postRouteMiddleware);
+		this.router.post(this.postRoutePath, this.isAuthenticated, this.setUserIdMiddleware, this.postRouteMiddleware, this.resultMiddleware);
 	}
 
 	/**
