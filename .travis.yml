@@ -1,9 +1,13 @@
 language: node_js
 node_js:
-  - "4.2"
-  - "4.1"
-  - "4.0"
+- '4.2'
 env:
-  - NODE_ENV=test MONGO_CONNECTION_TEST="mongodb://localhost:27017/mongo-website-test" MONGO_CONNECTION_DEVELOPMENT="mongodb://localhost:27017/mongo-website" MONGO_CONNECTION_PRODUCTION="mongodb://localhost:27017/mongo-website-prod"
+- NODE_ENV=test MONGO_CONNECTION_TEST="mongodb://localhost:27017/mongo-website-test"
+  MONGO_CONNECTION_DEVELOPMENT="mongodb://localhost:27017/mongo-website" MONGO_CONNECTION_PRODUCTION="mongodb://localhost:27017/mongo-website-prod"
 services:
-  - mongodb
+- mongodb
+deploy:
+  provider: heroku
+  app: agile-basin-40272
+  api_key:
+    secure: i7Rqx3k4OE63Oj7m+pijJDKfANOsEZeIkl+GOBd+tOBGGW90SXzMwlLmgz8cts8v1A1kE24UZ62uxUJACGTSmXiWyUGoCEM/ovg8a8Xt/DRfVGWja8aksDqJna8lh0fwKja6mqiYf3HExkcNGjB1azbS5fLXufpwlixsvOjqmbCAH5R4zMNIKa9bo8dutb58oOrJLHOzI3/SlgT/oAYVMSSB29kaoIRDkqkovZCio2N2GmRKroWDzDoTk09/cluKn2j5cEcbDQFjE9ygX3moD/GY9MDHRd4J9WoRahgcQcGuY70Dvf0rrng9FqKDp4GWxuYY/kabe35LNY4+U8HZ8rLDyX2XYMVRbo8VwZaSQvAFpJoV9F3yRdtaaNowmOchzbSIMNekUIbrZoLp0ZfPQn4roxzgcMUASvdQ0zxN6HBC8DyNdhhmx+jHH56+5B4GMHTT8WCSl1nLKgf+Qh2aKo/+U5FhlXbk+rwPDQiMlldvxXFmjWVkK+cCN6kxjhLuO6aufZdD8ihOvDEVKsAfcGC2biPPFCkOBoV/QWn3qO2C2GoGxwQsOUmtn8ZTRzHsQfjFIVnfnCrM2Li67IObdJkgvkRvFXDOih1nbPJNuTj03+bwGlcn2/5C6CRh8664xSX2W+LUEY6/LJ0UbRwceRC+roeQ/b35YT6EWm1vNN4=
