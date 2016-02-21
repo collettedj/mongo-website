@@ -77,7 +77,7 @@ describe("integration: user routes", function(){
             .catch(done);
     });
 
-    it("post user", function(done){
+    it("post user 404", function(done){
         request.post('/api/v1/users')
             .auth("test", "test1234")
             .send({
@@ -88,15 +88,7 @@ describe("integration: user routes", function(){
                     password:"mypassword",
                 }
             })
-            .expect(200)
-            .end(function(err,res){
-                assert.equal(null,err);
-                assert.equal("firstName", res.body.user.firstname);
-                assert.equal("lastName", res.body.user.lastname);
-                assert.equal("postedUser", res.body.user.username);
-                assert.notEqual("mypassword", res.body.user.password);
-                done(err);
-            });
+            .expect(404,done);
     });
 
     it("delete user", function(done){

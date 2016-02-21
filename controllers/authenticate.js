@@ -19,35 +19,14 @@ class AuthenticateController extends ControllerBase {
      */
     createRoutes(){
         // Create endpoint handlers for oauth2 authorize
-        this.router.post('/login', function(req, res, next) {
-              passport.authenticate('local', function(err, user, info) {
-                    if (err) {
-                        return next(err);
-                    }
-                    if (!user) {
-                        res.status(401).send(info);
-                    }else{
-                        req.logIn(user, function(err) {
-                            if (err) { return next(err); }
-                            return res.send(user);
-                        });
-                    }
-              })(req, res, next);
-        });
-
-        this.router.get('/user', function(req, res) {
-            console.log("**********************************");
-            console.log(req.user);
-            res.status(200).json(req.user);
-        });
+        this.router.post('/login', this.authenticateLoginMiddleware("login"));
 
         /* Handle Registration POST */
-        this.router.post('/signup',
-            passport.authenticate('signup'),
-            function(req, res){
-                res.status(200).json(req.user);
-            }
-        );
+        this.router.post('/signup', this.authenticateLoginMiddleware("signup"));
+
+        this.router.get('/user', function(req, res) {
+            res.status(200).json(req.user);
+        });
 
         /* Handle Logout */
         this.router.get('/signout', function(req, res) {
@@ -55,6 +34,28 @@ class AuthenticateController extends ControllerBase {
           res.sendStatus(200);
         });
 
+    }
+
+    authenticateLoginMiddleware(strategyName){
+        return (req, res, next) => {
+              passport.authenticate(strategyName, function(err, user, info) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (!user) {
+                        res.status(401).send(info);
+                    }else{
+                        req.logIn(user, function(err) {
+                            // console.log(user);
+                            if (err) {
+                                console.log(err);
+                                return next(err);
+                            }
+                            return res.send(user);
+                        });
+                    }
+              })(req, res, next);
+        };
     }
 
 }

@@ -150,13 +150,13 @@ class ModelControllerBase extends ControllerBase{
 	get resultMiddleware(){
 		return function(req, res){
 			res.json(req.modelResult);
-		}
+		};
 	}
 
 	get deleteResultMiddleware(){
 		return function(req, res){
 			res.sendStatus(204);
-		}
+		};
 	}
 
  	/**

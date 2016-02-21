@@ -5,6 +5,7 @@ const assert = require('chai').assert;
 const jwt = require('jwt-simple');
 const models = require('../../models');
 const authenticate = require('../../controllers/base/auth').authenticate;
+const authenticateSignup = require('../../controllers/base/auth').authenticateSignup;
 const authenticateClient = require('../../controllers/base/auth').authenticateClient;
 const authenticateAccessToken = require('../../controllers/base/auth').authenticateAccessToken;
 const oauth2mid = require('../../controllers/base/oauth2-middleware');
@@ -24,7 +25,7 @@ describe("integration: auth", function(){
             secret:"test_secret",
             clientIdentifier:"test_id",
         });
-        
+
         const code = models.Code({
             value: "test_code",
             redirectUri: "http://localhost:3000",
@@ -63,6 +64,49 @@ describe("integration: auth", function(){
     });
 
     describe("authenticate user", function(){
+
+        it("signup user", function(done){
+            const req = {
+                body: {
+                    firstname: "first",
+                    lastname: "last",
+                }
+            };
+
+            authenticateSignup(req, "new_user", "new_password", (err, user) => {
+                assert.equal(null,err);
+                assert.equal("new_user", user.username);
+                assert.equal("first", user.firstname);
+                assert.equal("last", user.lastname);
+
+                return models.User.findOne({username:"new_user"})
+                    .then(foundUser => {
+                        assert.equal("new_user", foundUser.username);
+                        assert.equal("first", foundUser.firstname);
+                        assert.equal("last", foundUser.lastname);
+                        done();
+                    })
+                    .catch(done);
+            });
+
+        });
+
+        it("signup with existing username", function(done){
+            const req = {
+                body: {
+                    firstname: "first",
+                    lastname: "last",
+                }
+            };
+
+            authenticateSignup(req, "test", "new_password", (err, user) => {
+                assert.equal(null,err);
+                assert.equal(false, user);
+                done();
+            });
+
+        });
+
         it("authenticate user success", function(done){
 
             authenticate("test", "test1234", (err, user) => {
@@ -202,7 +246,7 @@ describe("integration: auth", function(){
                     done(err);
                 });
         });
-        
+
         function exchangeCodePromise(client, clientIdentifier, redirectUri){
             return new Promise(function(resolve,reject){
                 oauth2mid.exchangeCode(client, clientIdentifier, redirectUri, function(err, accessToken, refreshToken, idToken){
@@ -216,9 +260,9 @@ describe("integration: auth", function(){
                         idToken
                     });
                 });
-            });                
-        }        
-        
+            });
+        }
+
         it("exchange code success", function(done){
             Promise.all([models.Client.findOne({}),
                 models.User.findOne({})])
@@ -233,7 +277,7 @@ describe("integration: auth", function(){
                     assert.notEqual(null, tokens.idToken);
                     const date = new Date();
                     const decodedIdToken = jwt.decode(tokens.idToken, tokens.client.secret);
-                    
+
                     assert.equal(tokens.client.clientIdentifier, decodedIdToken.aud);
                     assert.isBelow(date, new Date(decodedIdToken.exp));
                     done();
@@ -242,7 +286,7 @@ describe("integration: auth", function(){
                     done(err);
                 });
         });
-        
+
         it("exchange code bad client code", function(done){
             Promise.all([models.Client.findOne({}),
                 models.User.findOne({})])
@@ -261,7 +305,7 @@ describe("integration: auth", function(){
                     done(err);
                 });
         });
-        
+
         it("exchange code bad redirect uri", function(done){
             Promise.all([models.Client.findOne({}),
                 models.User.findOne({})])
@@ -279,9 +323,9 @@ describe("integration: auth", function(){
                 .catch(err => {
                     done(err);
                 });
-        });         
-        
-        
+        });
+
+
     });
 
 

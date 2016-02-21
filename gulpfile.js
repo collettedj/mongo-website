@@ -1,6 +1,6 @@
 /**
  * gulpfile module. set up gulp tasks
- * @module gulpfile 
+ * @module gulpfile
  */
 "use strict";
 
@@ -20,7 +20,7 @@ gulp.task('lint', function() {
     return gulp.src(paths.jshintFiles)
         .pipe(jshint())
         .pipe(jshint.reporter(stylish));
-}); 
+});
 
 var handleError = function (err) {
     console.log(err.toString());
@@ -30,8 +30,8 @@ var handleError = function (err) {
 // gulp.task("test", ['lint'], function() {
 //     process.env.NODE_ENV = 'test';
 //     return gulp.src(paths.testFiles)
-//         .pipe(mocha({ 
-//             reporter: "spec" 
+//         .pipe(mocha({
+//             reporter: "spec"
 //         })
 //         .on("error", handleError));
 // });
@@ -41,13 +41,15 @@ gulp.task('default', ['lint'], function () {
             ext: 'html js',
             tasks: ['lint'],
             execMap: {'js':'node --debug'},
-            env: { 
+            env: {
               'NODE_ENV': 'development',
               'DEBUG':'server:*,express:application,mongo-website:*'
             }
         })
+        .on('crash', nodemon.restart)
         .on('restart', function () {
             console.log('restarted!');
-        }); 
+        });
+
 });
 

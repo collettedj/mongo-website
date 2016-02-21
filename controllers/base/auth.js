@@ -65,6 +65,38 @@ function authenticate(username, password, callback) {
     });
 }
 
+/**
+ * Authenticate a user when signing up. That way the user doea not have to register and
+ * then log in
+ * @param  {Request}  req      Express request object
+ * @param  {String}   username users username
+ * @param  {String}   password user's password
+ * @param  {Function} done     callback
+ * @return {Void}              [description]
+ */
+function authenticateSignup(req, username, password, done) {
+    User.findOne({'username':username})
+        .then(foundUser => {
+            if(foundUser){
+                return done(null, false, `User already exists with username: ${username}`);
+            }
+
+            const user = new User({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                username: username,
+                password: password,
+            });
+            return user.save()
+                .then(savedUser => {
+                    done(null, savedUser);
+                });
+        })
+        .catch(err => {
+            return done(err);
+        });
+}
+
 function authenticateClient(username, password, callback) {
   Client.findOne({ clientIdentifier: username }, function (err, client) {
     if (err) { return callback(err); }
@@ -97,7 +129,8 @@ function authenticateAccessToken(accessToken, callback) {
 }
 
 passport.use(new BasicStrategy(authenticate));
-passport.use(new LocalStrategy(authenticate));
+passport.use('login', new LocalStrategy(authenticate));
+passport.use('signup', new LocalStrategy({passReqToCallback : true}, authenticateSignup));
 passport.use('client-basic', new BasicStrategy(authenticateClient));
 passport.use(new BearerStrategy(authenticateAccessToken));
 
@@ -106,6 +139,7 @@ passport.use(new BearerStrategy(authenticateAccessToken));
  * @type {Object}
  */
 exports.authenticate = authenticate;
+exports.authenticateSignup = authenticateSignup;
 exports.authenticateClient = authenticateClient;
 exports.authenticateAccessToken = authenticateAccessToken;
 

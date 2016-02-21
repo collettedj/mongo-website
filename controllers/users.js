@@ -26,7 +26,7 @@ class UserController extends ModelControllerBase {
 	createRoutes(){
 		// super.createGetOneRoute();
 		super.createGetManyRoute();
-		super.createPostRoute({authenticate:false});
+		// super.createPostRoute({authenticate:false});
 		// super.createPutRoute();
 		// super.createDeleteRoute();
 
