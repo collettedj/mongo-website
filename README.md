@@ -1,4 +1,4 @@
-# mongo-website
+# mongo-website [![Build Status](https://travis-ci.org/collettedj/mongo-website.svg?branch=master)](https://travis-ci.org/collettedj/mongo-website)
 This site is my attempt at creating a solid express website with a mongodb backend database.
 
 ### flow for recieving auth token
