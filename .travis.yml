@@ -5,5 +5,8 @@ node_js:
   - "4.0"
 env:
   - NODE_ENV=test
+  - MONGO_CONNECTION_TEST="mongodb://localhost:27017/mongo-website-test"
+  - MONGO_CONNECTION_DEVELOPMENT="mongodb://localhost:27017/mongo-website"
+  - MONGO_CONNECTION_PRODUCTION="mongodb://localhost:27017/mongo-website-prod"
 services:
   - mongodb

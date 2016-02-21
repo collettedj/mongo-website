@@ -7,8 +7,9 @@
 
 const config = {
 	mongo: {
-	    development:"mongodb://localhost:27017/mongo-website",
-	    test:"mongodb://localhost:27017/mongo-website-test",
+        production: process.env.MONGO_CONNECTION_PRODUCTION,
+	    development: process.env.MONGO_CONNECTION_DEVELOPMENT,
+	    test: process.env.MONGO_CONNECTION_TEST,
 	}
 };
 
