@@ -54,7 +54,9 @@ class ControllerBase{
 				console.log("failed to save error to log", err.stack);
 			})
 			.then(() => {
-				res.status(500).send(err);
+				res.status(500).send({
+					errors: err
+				});
 			});
 	}
 

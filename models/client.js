@@ -34,6 +34,7 @@ const ClientSchema = new Schema({
 
 	clientIdentifier: {
 		type: String,
+		unique: true,
 		required: true
 	},
 
