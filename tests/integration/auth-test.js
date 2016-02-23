@@ -109,7 +109,7 @@ describe("integration: auth", function(){
 
         it("authenticate user success", function(done){
 
-            authenticate("test", "test1234", (err, user) => {
+            authenticate("TEST", "test1234", (err, user) => {
                 assert.equal(null,err);
                 assert.notEqual(null, user);
                 assert.notEqual(undefined, user);

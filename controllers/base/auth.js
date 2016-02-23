@@ -34,7 +34,7 @@ passport.deserializeUser(function(id, done) {
  * @return {Void}
  */
 function authenticate(username, password, callback) {
-    User.findOne({ username: username }, function (err, user) {
+    User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") }} , function (err, user) {
         if (err) { return callback(err); }
 
         // No user found with that username
