@@ -1,0 +1,10 @@
+{
+  "dependencies": {},
+  "ambientDependencies": {
+    "gulp": "github:DefinitelyTyped/DefinitelyTyped/gulp/gulp.d.ts#fbdc1b91125a87e62be3803f58aabb176cc2fd50",
+    "gulp-nodemon": "github:DefinitelyTyped/DefinitelyTyped/gulp-nodemon/gulp-nodemon.d.ts#abc2bcfb8524b1e027e6298d3348012b5b06eda5",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#48c1e3c1d6baefa4f1a126f188c27c4fefd36bff",
+    "orchestrator": "github:DefinitelyTyped/DefinitelyTyped/orchestrator/orchestrator.d.ts#422b006d39dd37fc667ce5464967ee3ff6135092",
+    "q": "github:DefinitelyTyped/DefinitelyTyped/q/Q.d.ts#4de74cb527395c13ba20b438c3a7a419ad931f1c"
+  }
+}
