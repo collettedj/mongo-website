@@ -81,4 +81,4 @@ app.use(function(err:any, req: express.Request, res: express.Response, next: exp
 });
 
 
-module.exports = app;
+export = app;

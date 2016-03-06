@@ -3,6 +3,7 @@
   "ambientDependencies": {
     "body-parser": "github:DefinitelyTyped/DefinitelyTyped/body-parser/body-parser.d.ts#9a2c50ea846ee6ae36feaea0accc77ae7b08a748",
     "cookie-parser": "github:DefinitelyTyped/DefinitelyTyped/cookie-parser/cookie-parser.d.ts#e2001653ffbd99c2fc80a272ca80d8c958136de4",
+    "debug": "github:DefinitelyTyped/DefinitelyTyped/debug/debug.d.ts#5ccca9a4efc3d08724ff14ea3a263c7417db0b3d",
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#dd638012d63e069f2c99d06ef4dcc9616a943ee4",
     "express-session": "github:DefinitelyTyped/DefinitelyTyped/express-session/express-session.d.ts#3ca0e0306a56b3dff5e6999dbd1627bf30201cfc",
     "gulp": "github:DefinitelyTyped/DefinitelyTyped/gulp/gulp.d.ts#fbdc1b91125a87e62be3803f58aabb176cc2fd50",

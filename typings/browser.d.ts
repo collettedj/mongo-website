@@ -1,5 +1,6 @@
 /// <reference path="browser/ambient/body-parser/body-parser.d.ts" />
 /// <reference path="browser/ambient/cookie-parser/cookie-parser.d.ts" />
+/// <reference path="browser/ambient/debug/debug.d.ts" />
 /// <reference path="browser/ambient/express-session/express-session.d.ts" />
 /// <reference path="browser/ambient/express/express.d.ts" />
 /// <reference path="browser/ambient/gulp-nodemon/gulp-nodemon.d.ts" />
