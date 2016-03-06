@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www.js",
-    "pretest": "./node_modules/gulp/bin/gulp.js lint",
+    "pretest": "./node_modules/gulp/bin/gulp.js tslint",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha ./tests/**/*test.js ",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "supertest": "^1.1.0"
+    "gulp-tslint": "^4.3.3",
+    "supertest": "^1.1.0",
+    "tslint": "^3.5.0"
   }
 }

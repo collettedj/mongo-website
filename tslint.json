@@ -1,5 +1,4 @@
 {
-  "rulesDirectory": ["node_modules/ng2lint/dist/src"],
   "rules": {
     "class-name": true,
     "curly": false,
@@ -32,12 +31,6 @@
     "semicolon": true,
     "trailing-comma": true,
     "triple-equals": true,
-    "variable-name": false,
-
-    "component-selector-name": [true, "kebab-case"],
-    "component-selector-type": [true, "element"],
-    "host-parameter-decorator": true,
-    "input-parameter-decorator": true,
-    "output-parameter-decorator": true
+    "variable-name": false
   }
 }
