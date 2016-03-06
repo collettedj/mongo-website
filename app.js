@@ -3,10 +3,9 @@
  * @module app
  */
 'use strict';
-// var express = require('express');
 var express = require('express');
 var path = require('path');
-// const favicon = require('serve-favicon');
+// import * as favicon from 'serve-favicon';
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');

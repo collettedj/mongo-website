@@ -4,15 +4,14 @@
  */
 'use strict';
 
-// var express = require('express');
 import * as express from 'express';
-const path = require('path');
-// const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const passport = require('passport');
+import * as path from 'path';
+// import * as favicon from 'serve-favicon';
+import * as logger from 'morgan';
+import * as cookieParser from 'cookie-parser';
+import * as bodyParser from 'body-parser';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 require('./models');
 
@@ -28,6 +27,7 @@ app.set('view engine', 'hbs');
 if (app.get('env') !== 'test') {
   app.use(logger('dev'));
 }
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
