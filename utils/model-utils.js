@@ -3,38 +3,44 @@
  * @module utils/model-utils
  */
 "use strict";
-
-const inflection = require('inflection');
-
+var inflection = require('inflection');
 /**
  * class to handle utility function for Mongoose models
  */
-class ModelUtils{
-	/**
-	 * @param  {Model} Mongoose model
-	 * @return {Void}
-	 */
-	constructor(Model){
-		this.Model = Model;
-	}
-
-	/**
-	 * convert the model name to the singular dasherized name
-	 * @return {string} the singular dasherized model name
-	 */
-	get dashSingularName(){
-		const dashSingularName = inflection.transform( this.Model.modelName, [ 'underscore', 'dasherize', 'singularize' ]).toLowerCase(); 
-		return dashSingularName;
-	}
-
-	/**
-	 * convert the model name to the plural dasherized name
-	 * @return {string} the plural dasherized model name
-	 */
-	get dashPluralName(){
-		const dashSingularName = inflection.transform( this.Model.modelName, [ 'underscore', 'dasherize', 'pluralize' ]).toLowerCase(); 
-		return dashSingularName;
-	}
-}
-
+var ModelUtils = (function () {
+    /**
+     * @param  {Model} Mongoose model
+     * @return {Void}
+     */
+    function ModelUtils(Model) {
+        this.Model = Model;
+        this.Model = Model;
+    }
+    Object.defineProperty(ModelUtils.prototype, "dashSingularName", {
+        /**
+         * convert the model name to the singular dasherized name
+         * @return {string} the singular dasherized model name
+         */
+        get: function () {
+            var dashSingularName = inflection.transform(this.Model.modelName, ['underscore', 'dasherize', 'singularize']).toLowerCase();
+            return dashSingularName;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ModelUtils.prototype, "dashPluralName", {
+        /**
+         * convert the model name to the plural dasherized name
+         * @return {string} the plural dasherized model name
+         */
+        get: function () {
+            var dashSingularName = inflection.transform(this.Model.modelName, ['underscore', 'dasherize', 'pluralize']).toLowerCase();
+            return dashSingularName;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ModelUtils;
+}());
 module.exports = ModelUtils;
+//# sourceMappingURL=model-utils.js.map

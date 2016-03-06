@@ -3,30 +3,35 @@
  * @module models/Token
  */
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+
+import * as mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
 /**
  * Mongoose schema to for Tokens
  * @type {Schema}
  */
-var TokenSchema = new Schema({
+const TokenSchema = new Schema({
     value: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
+
     userId: {
         type: String,
         required: true
     },
+
     clientId: {
         type: String,
         required: true
     }
 });
+
 /**
  * Mongoose Token model
  * @type {Model}
  */
-var Token = mongoose.model('Token', TokenSchema);
-module.exports = Token;
-//# sourceMappingURL=token.js.map
+const Token = mongoose.model('Token', TokenSchema);
+
+export = Token;

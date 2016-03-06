@@ -3,27 +3,31 @@
  * @module models/error-log
  */
 "use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 /**
  * Mongoose schema for error logs
  * @type {Schema}
  */
-var ErrorLogSchema = new Schema({
+const ErrorLogSchema = new Schema({
     message: {
         type: String,
         required: true,
     },
+
     createdAt: {
         type: Date,
         expires: 60 * 60 * 24 * 7,
         required: true,
     }
 });
+
 /**
  * Mongoose model for error logs
  * @type {Model}
  */
-var ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
+const ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
+
 module.exports = ErrorLog;
-//# sourceMappingURL=error-log.js.map

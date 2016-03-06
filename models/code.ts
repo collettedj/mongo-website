@@ -3,38 +3,45 @@
  * @module models/code
  */
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+
+import * as mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
 /**
  * Mongoose schema to for Codes
  * @type {Schema}
  */
-var CodeSchema = new Schema({
+const CodeSchema = new Schema({
     value: {
         type: String,
         required: true
     },
+
     redirectUri: {
         type: String,
         required: true
     },
+
     userId: {
         type: String,
         required: true
     },
+
     clientId: {
         type: String,
         required: true
     },
+
     scope: [{
-            type: String,
-            required: true
-        }]
+        type:String,
+        required: true
+    }]
 });
+
 /**
  * Mongoose Code model
  * @type {Model}
  */
-var Code = mongoose.model('Code', CodeSchema);
-module.exports = Code;
-//# sourceMappingURL=code.js.map
+const Code = mongoose.model('Code', CodeSchema);
+
+export = Code;
