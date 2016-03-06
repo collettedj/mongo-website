@@ -20,15 +20,15 @@ import * as tslint from 'gulp-tslint';
 
 
 gulp.task('tslint', () =>
-    gulp.src('gulpfile.ts')
+    gulp.src(['gulpfile.ts', 'app.ts'])
         .pipe(tslint())
         .pipe(tslint.report('verbose'))
 );
 
-gulp.task('default', function () {
+gulp.task('default', ['tslint'], function () {
     nodemon({ script: './bin/www.js',
             ext: 'html js',
-            // tasks: ['lint'],
+            tasks: ['tslint'],
             execMap: {'js':'node --debug'},
             env: {
               'NODE_ENV': 'development',

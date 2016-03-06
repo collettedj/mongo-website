@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www.js",
+    "start": "concurrent \"npm run tsc:w\" \"gulp\" ",
     "pretest": "./node_modules/gulp/bin/gulp.js tslint",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha ./tests/**/*test.js ",
     "tsc": "tsc",
@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "concurrently": "^2.0.0",
     "gulp-tslint": "^4.3.3",
     "supertest": "^1.1.0",
     "tslint": "^3.5.0"

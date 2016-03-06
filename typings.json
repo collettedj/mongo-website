@@ -1,12 +1,15 @@
 {
   "dependencies": {},
   "ambientDependencies": {
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#dd638012d63e069f2c99d06ef4dcc9616a943ee4",
     "gulp": "github:DefinitelyTyped/DefinitelyTyped/gulp/gulp.d.ts#fbdc1b91125a87e62be3803f58aabb176cc2fd50",
     "gulp-nodemon": "github:DefinitelyTyped/DefinitelyTyped/gulp-nodemon/gulp-nodemon.d.ts#abc2bcfb8524b1e027e6298d3348012b5b06eda5",
     "gulp-tslint": "github:DefinitelyTyped/DefinitelyTyped/gulp-tslint/gulp-tslint.d.ts#ba3d78e4b5965cedf44a52e9c36fb72932352c16",
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#cb5206a8ac1c9a3ddfd126f5ecea6729b2361452",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#48c1e3c1d6baefa4f1a126f188c27c4fefd36bff",
     "orchestrator": "github:DefinitelyTyped/DefinitelyTyped/orchestrator/orchestrator.d.ts#422b006d39dd37fc667ce5464967ee3ff6135092",
     "q": "github:DefinitelyTyped/DefinitelyTyped/q/Q.d.ts#4de74cb527395c13ba20b438c3a7a419ad931f1c",
+    "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#0fa4e9e61385646ea6a4cba2aef357353d2ce77f",
     "vinyl": "github:DefinitelyTyped/DefinitelyTyped/vinyl/vinyl.d.ts#4ead81cc68ab1a2cd824de4394e1bda72b1b9f92"
   }
 }
