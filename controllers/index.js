@@ -3,31 +3,32 @@
  * @module routes/index
  */
 "use strict";
-const _ = require('lodash');
-const fs = require('fs');
-const path = require('path');
-
-const basename = path.basename(module.filename);
-const skipFiles = [basename, "base", "auth.js"];
-
-/**
- * @param  {string} baseRoutePath base path for every route.
- * @param  {object} app express appliation object
- * @return {Void}
- */
-function loadRoutes(baseRoutePath, app){
-	fs.readdirSync(__dirname)
-		.filter(function(file) {
-		  	return (file.indexOf('.') !== 0) && !_.includes(skipFiles,file);
-		})
-		.forEach(function(file) {
-		    const basename = path.basename(file, '.js');
-		    const ControllerClass = require('./' + basename);
-		    const controller = new ControllerClass(app);
-		    controller.applyControllerToRouter();
-		    app.use(baseRoutePath + basename, controller.router);
-		});
-
+var authenticate_1 = require('./authenticate');
+var clients_1 = require('./clients');
+var oauth2_1 = require('./oauth2');
+var users_1 = require('./users');
+function loadRoutes(baseRoutePath, app) {
+    var controllers = [
+        {
+            controller: new authenticate_1.AuthenticateController(app),
+            path: "authenticate"
+        },
+        {
+            controller: new clients_1.ClientController(app),
+            path: "clients"
+        },
+        {
+            controller: new oauth2_1.Oauth2Controller(app),
+            path: "oauth2"
+        },
+        {
+            controller: new users_1.UserController(app),
+            path: "users"
+        }];
+    controllers.forEach(function (c) {
+        c.controller.applyControllerToRouter();
+        app.use(baseRoutePath + c.path, c.controller.router);
+    });
 }
-
-module.exports = loadRoutes;
+exports.loadRoutes = loadRoutes;
+//# sourceMappingURL=index.js.map

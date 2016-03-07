@@ -11,6 +11,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
+var controllers_1 = require('./controllers');
 require('./models');
 var app = express();
 // view engine setup
@@ -33,7 +34,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-require('./controllers')('/api/v1/', app);
+controllers_1.loadRoutes('/api/v1/', app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

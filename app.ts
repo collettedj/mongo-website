@@ -12,6 +12,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import {loadRoutes} from './controllers';
 
 require('./models');
 
@@ -43,8 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./controllers')('/api/v1/', app);
-
+loadRoutes('/api/v1/', app);
 
 // catch 404 and forward to error handler
 app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {

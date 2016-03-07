@@ -14,7 +14,7 @@
     "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#cb5206a8ac1c9a3ddfd126f5ecea6729b2361452",
     "mongoose": "github:DefinitelyTyped/DefinitelyTyped/mongoose/mongoose.d.ts#cebde64b3a1d63d07ee7c7dbc49b631ce220d027",
     "morgan": "github:DefinitelyTyped/DefinitelyTyped/morgan/morgan.d.ts#4566a913a3667dc627851d0f7f38ffcd0e7cf6ea",
-    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#48c1e3c1d6baefa4f1a126f188c27c4fefd36bff",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#cebde64b3a1d63d07ee7c7dbc49b631ce220d027",
     "orchestrator": "github:DefinitelyTyped/DefinitelyTyped/orchestrator/orchestrator.d.ts#422b006d39dd37fc667ce5464967ee3ff6135092",
     "passport": "github:DefinitelyTyped/DefinitelyTyped/passport/passport.d.ts#432545c4d99dba86a5229bed0e500f66f43b1baa",
     "q": "github:DefinitelyTyped/DefinitelyTyped/q/Q.d.ts#4de74cb527395c13ba20b438c3a7a419ad931f1c",

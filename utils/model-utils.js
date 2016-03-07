@@ -42,5 +42,5 @@ var ModelUtils = (function () {
     });
     return ModelUtils;
 }());
-module.exports = ModelUtils;
+exports.ModelUtils = ModelUtils;
 //# sourceMappingURL=model-utils.js.map

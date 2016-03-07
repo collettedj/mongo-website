@@ -9,7 +9,7 @@ const inflection = require('inflection');
 /**
  * class to handle utility function for Mongoose models
  */
-class ModelUtils{
+export class ModelUtils{
 	/**
 	 * @param  {Model} Mongoose model
 	 * @return {Void}
@@ -36,5 +36,3 @@ class ModelUtils{
 		return dashSingularName;
 	}
 }
-
-export = ModelUtils;
