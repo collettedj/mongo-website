@@ -6,7 +6,7 @@
 
 // const ModelControllerBase = require('./base/model-controller-base');
 import {ModelControllerBase} from './base/model-controller-base';
-const models = require('../models');
+import * as models from '../models';
 
 /**
  * UserController is a class that creates an express router with GET,POST,PUT,and DELETE.
@@ -73,11 +73,12 @@ export class UserController extends ModelControllerBase {
 	get includeModelsForGetOne() {
 		return (req, res, next) => {
 			const requestId = req.params.id;
-			models.Client.find({"userId":requestId})
+			(models.Client.find({"userId":requestId})
+				.exec()
 				.then(clients => {
 					req.modelResult.clients = clients;
 					next();
-				})
+				}) as any)
 				.catch(err => {
 					return this.sendErrorResponse(res, err);
 				});

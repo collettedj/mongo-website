@@ -7,7 +7,6 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt-nodejs';
 const Schema = mongoose.Schema;
-let User = null;
 
 /**
  * Mongoose sub schema for roles that a user is a member of
@@ -93,7 +92,7 @@ const UserSchema = new Schema({
  * @param  {Function} callback
  */
 (<any>UserSchema).methods.incrementBadPasswordAttempts = function(cb) {
-	User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, {new:true}, (err, updatedUser) => {
+	User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, {new:true}, (err, updatedUser:any) => {
 		if(err){return cb(err);	}
 
 		if(updatedUser.badPasswordAttempts >= 3){
@@ -155,6 +154,4 @@ UserSchema.pre('save', (<any>UserSchema).methods.hashPassword);
  * Mongoose user model
  * @type {Model}
  */
-User = mongoose.model('User', UserSchema);
-
-export = User;
+export const User = mongoose.model('User', UserSchema);

@@ -7,14 +7,13 @@ var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
 var LocalStrategy = require('passport-local').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
-var User = require('../../models').User;
-var Client = require('../../models').Client;
-var Token = require('../../models').Token;
+var models_1 = require('../../models');
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 passport.deserializeUser(function (id, done) {
-    User.findById(id)
+    models_1.User.findById(id)
+        .exec()
         .then(function (user) {
         done(null, user);
     })
@@ -30,41 +29,47 @@ passport.deserializeUser(function (id, done) {
  * @return {Void}
  */
 function authenticate(username, password, callback) {
-    User.findOne({ username: { $regex: new RegExp("^" + username + "$", "i") } }, function (err, user) {
-        if (err) {
-            return callback(err);
-        }
-        // No user found with that username
-        if (!user) {
-            return callback(null, false, "could not find user or password");
-        }
-        // User has been locked out
-        if (user.isLockedOut) {
-            return callback(null, false, "your account has been locked out");
-        }
-        // Make sure the password is correct
-        user.verifyPassword(password, function (err, isMatch) {
+    try {
+        models_1.User.findOne({ username: { $regex: new RegExp("^" + username + "$", "i") } }, function (err, user) {
             if (err) {
                 return callback(err);
             }
-            // Password did not match
-            if (!isMatch) {
-                return user.incrementBadPasswordAttempts(function (err, updatedUser) {
-                    if (err) {
-                        return callback(err);
-                    }
-                    return callback(null, false, "could not find user or password");
-                });
+            // No user found with that username
+            if (!user) {
+                return callback(null, false, "could not find user or password");
             }
-            // Success
-            return user.resetBadPasswordAttempts(function (err, updatedUser) {
+            // User has been locked out
+            if (user.isLockedOut) {
+                return callback(null, false, "your account has been locked out");
+            }
+            // Make sure the password is correct
+            user.verifyPassword(password, function (err, isMatch) {
                 if (err) {
                     return callback(err);
                 }
-                return callback(null, updatedUser);
+                // Password did not match
+                if (!isMatch) {
+                    return user.incrementBadPasswordAttempts(function (err, updatedUser) {
+                        if (err) {
+                            return callback(err);
+                        }
+                        return callback(null, false, "could not find user or password");
+                    });
+                }
+                // Success
+                return user.resetBadPasswordAttempts(function (err, updatedUser) {
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(null, updatedUser);
+                });
             });
         });
-    });
+    }
+    catch (err) {
+        console.log("got the error");
+        console.log(err);
+    }
 }
 exports.authenticate = authenticate;
 /**
@@ -77,12 +82,13 @@ exports.authenticate = authenticate;
  * @return {Void}              [description]
  */
 function authenticateSignup(req, username, password, done) {
-    User.findOne({ 'username': username })
+    models_1.User.findOne({ 'username': username })
+        .exec()
         .then(function (foundUser) {
         if (foundUser) {
             return done(null, false, "User already exists with username: " + username);
         }
-        var user = new User({
+        var user = new models_1.User({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             username: username,
@@ -99,7 +105,7 @@ function authenticateSignup(req, username, password, done) {
 }
 exports.authenticateSignup = authenticateSignup;
 function authenticateClient(username, password, callback) {
-    Client.findOne({ clientIdentifier: username }, function (err, client) {
+    models_1.Client.findOne({ clientIdentifier: username }, function (err, client) {
         if (err) {
             return callback(err);
         }
@@ -113,7 +119,7 @@ function authenticateClient(username, password, callback) {
 }
 exports.authenticateClient = authenticateClient;
 function authenticateAccessToken(accessToken, callback) {
-    Token.findOne({ value: accessToken }, function (err, token) {
+    models_1.Token.findOne({ value: accessToken }, function (err, token) {
         if (err) {
             return callback(err);
         }
@@ -121,7 +127,7 @@ function authenticateAccessToken(accessToken, callback) {
         if (!token) {
             return callback(null, false);
         }
-        User.findOne({ _id: token.userId }, function (err, user) {
+        models_1.User.findOne({ _id: token.userId }, function (err, user) {
             if (err) {
                 return callback(err);
             }

@@ -46,6 +46,5 @@ var ClientSchema = new Schema({
  * Mongoose Client model
  * @type {Model}
  */
-var Client = mongoose.model('Client', ClientSchema);
-module.exports = Client;
+exports.Client = mongoose.model('Client', ClientSchema);
 //# sourceMappingURL=client.js.map

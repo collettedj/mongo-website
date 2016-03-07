@@ -12,9 +12,10 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as models from './models';
 import {loadRoutes} from './controllers';
 
-require('./models');
+models.initModels();
 
 const app = express();
 

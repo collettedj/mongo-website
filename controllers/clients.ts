@@ -6,7 +6,7 @@
 
 // const ModelControllerBase = require('./base/model-controller-base');
 import {ModelControllerBase} from './base/model-controller-base';
-const models = require('../models');
+import * as models from '../models';
 
 /**
  * ClientController is a class that creates an express route with GET,POST,PUT,and DELETE.

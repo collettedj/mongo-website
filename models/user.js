@@ -6,7 +6,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var Schema = mongoose.Schema;
-var User = null;
 /**
  * Mongoose sub schema for roles that a user is a member of
  * @type {Schema}
@@ -82,7 +81,7 @@ UserSchema.methods.verifyPassword = function (password, cb) {
  * @param  {Function} callback
  */
 UserSchema.methods.incrementBadPasswordAttempts = function (cb) {
-    User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, { new: true }, function (err, updatedUser) {
+    exports.User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, { new: true }, function (err, updatedUser) {
         if (err) {
             return cb(err);
         }
@@ -103,7 +102,7 @@ UserSchema.methods.incrementBadPasswordAttempts = function (cb) {
  * @param  {Function} callback
  */
 UserSchema.methods.resetBadPasswordAttempts = function (cb) {
-    User.findOneAndUpdate({ _id: this._id }, { $set: { badPasswordAttempts: 0 } }, { new: true }, function (err, updatedUser) {
+    exports.User.findOneAndUpdate({ _id: this._id }, { $set: { badPasswordAttempts: 0 } }, { new: true }, function (err, updatedUser) {
         if (err) {
             return cb(err);
         }
@@ -140,6 +139,5 @@ UserSchema.pre('save', UserSchema.methods.hashPassword);
  * Mongoose user model
  * @type {Model}
  */
-User = mongoose.model('User', UserSchema);
-module.exports = User;
+exports.User = mongoose.model('User', UserSchema);
 //# sourceMappingURL=user.js.map

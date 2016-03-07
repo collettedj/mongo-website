@@ -25,20 +25,31 @@ gulp.task('tslint', () =>
         .pipe(tslint.report('verbose'))
 );
 
+const nodemonOpts: nodemon.Option = {
+    script: './bin/www.js',
+    ext: 'html js',
+    tasks: ['tslint'],
+    execMap: { 'js': 'node --debug' },
+    env: {
+        'NODE_ENV': 'development',
+        'DEBUG': 'server:*,express:application,mongo-website:*'
+    }
+};
+
 gulp.task('default', ['tslint'], function () {
-    nodemon({ script: './bin/www.js',
-            ext: 'html js',
-            tasks: ['tslint'],
-            execMap: {'js':'node --debug'},
-            env: {
-              'NODE_ENV': 'development',
-              'DEBUG':'server:*,express:application,mongo-website:*'
-            }
-        })
+    return nodemon(nodemonOpts)
         // .on('crash', nodemon.restart)
         .on('restart', function () {
             console.log('restarted!');
         });
+});
 
+gulp.task('break', ['tslint'], function() {
+    nodemonOpts.execMap['js'] = 'node --debug-brk';
+    return nodemon(nodemonOpts)
+        // .on('crash', nodemon.restart)
+        .on('restart', function() {
+            console.log('restarted!');
+        });
 });
 

@@ -4,11 +4,12 @@
  * config/dbconf.js file. All mongoose models can loaded by using require('./models')
  * @module models/index
  */
+
 "use strict";
 
-import * as _ from 'lodash';
-import * as fs from 'fs';
-import * as path from 'path';
+// import * as _ from 'lodash';
+// import * as fs from 'fs';
+// import * as path from 'path';
 import * as mongoose from 'mongoose';
 import * as debug from 'debug';
 
@@ -30,22 +31,12 @@ db.once('open', function() {
   debugserver("connected to mongo database");
 });
 
-const basename = path.basename(module.filename);
-const skipFiles = [basename];
+export {Client} from './client';
+export {Token} from './token';
+export {Code} from './code';
+export {User} from './user';
+export {ErrorLog} from './error-log';
 
-function loadModels(){
-	const models = {};
+export function initModels(){
 
-	fs.readdirSync(__dirname)
-		.filter(function(file) {
-		  	return (file.indexOf('.') !== 0) && path.extname(file).toLowerCase() === ".js" && !_.includes(skipFiles,file);
-		})
-		.forEach(function(file) {
-		    const basename = path.basename(file, '.js');
-		    const Model = require('./' + basename);
-		    models[Model.modelName] = Model;
-		});
-	return models;
 }
-
-export = loadModels();

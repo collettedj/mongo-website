@@ -28,6 +28,4 @@ const ErrorLogSchema = new Schema({
  * Mongoose model for error logs
  * @type {Model}
  */
-const ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
-
-module.exports = ErrorLog;
+export const ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);

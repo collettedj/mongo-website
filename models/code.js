@@ -35,6 +35,5 @@ var CodeSchema = new Schema({
  * Mongoose Code model
  * @type {Model}
  */
-var Code = mongoose.model('Code', CodeSchema);
-module.exports = Code;
+exports.Code = mongoose.model('Code', CodeSchema);
 //# sourceMappingURL=code.js.map

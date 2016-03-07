@@ -27,6 +27,5 @@ var TokenSchema = new Schema({
  * Mongoose Token model
  * @type {Model}
  */
-var Token = mongoose.model('Token', TokenSchema);
-module.exports = Token;
+exports.Token = mongoose.model('Token', TokenSchema);
 //# sourceMappingURL=token.js.map

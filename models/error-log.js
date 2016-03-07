@@ -24,6 +24,5 @@ var ErrorLogSchema = new Schema({
  * Mongoose model for error logs
  * @type {Model}
  */
-var ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
-module.exports = ErrorLog;
+exports.ErrorLog = mongoose.model('ErrorLog', ErrorLogSchema);
 //# sourceMappingURL=error-log.js.map

@@ -8,19 +8,18 @@ const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const LocalStrategy = require('passport-local').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
-const User = require('../../models').User;
-const Client = require('../../models').Client;
-const Token = require('../../models').Token;
+import {User, Client, Token} from '../../models';
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    User.findById(id)
+    (User.findById(id)
+        .exec()
         .then(function(user){
             done(null, user);
-        })
+        }) as any)
         .catch(function(error){
             done(error, null);
         });
@@ -34,35 +33,41 @@ passport.deserializeUser(function(id, done) {
  * @return {Void}
  */
 function authenticate(username, password, callback) {
-    User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") }} , function (err, user) {
-        if (err) { return callback(err); }
-
-        // No user found with that username
-        if (!user) { return callback(null, false, "could not find user or password"); }
-
-        // User has been locked out
-        if(user.isLockedOut) { return callback(null, false, "your account has been locked out"); }
-
-        // Make sure the password is correct
-        user.verifyPassword(password, function(err, isMatch) {
+    try{
+        User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") } }, function(err, user) {
             if (err) { return callback(err); }
 
-            // Password did not match
-            if (!isMatch) {
-                return user.incrementBadPasswordAttempts((err, updatedUser) => {
-                    if (err) { return callback(err); }
-                    return callback(null, false, "could not find user or password");
-                });
-            }
+            // No user found with that username
+            if (!user) { return callback(null, false, "could not find user or password"); }
 
-            // Success
-            return user.resetBadPasswordAttempts((err, updatedUser) => {
+            // User has been locked out
+            if ((<any>user).isLockedOut) { return callback(null, false, "your account has been locked out"); }
+
+            // Make sure the password is correct
+            (<any>user).verifyPassword(password, function(err, isMatch) {
+                if (err) { return callback(err); }
+
+                // Password did not match
+                if (!isMatch) {
+                    return (<any>user).incrementBadPasswordAttempts((err, updatedUser) => {
+                        if (err) { return callback(err); }
+                        return callback(null, false, "could not find user or password");
+                    });
+                }
+
+                // Success
+                return (<any>user).resetBadPasswordAttempts((err, updatedUser) => {
                     if (err) { return callback(err); }
                     return callback(null, updatedUser);
-            });
+                });
 
+            });
         });
-    });
+    }catch(err){
+        console.log("got the error");
+        console.log(err);
+    }
+
 }
 
 /**
@@ -75,7 +80,8 @@ function authenticate(username, password, callback) {
  * @return {Void}              [description]
  */
 function authenticateSignup(req, username, password, done) {
-    User.findOne({'username':username})
+    (User.findOne({'username':username})
+        .exec()
         .then(foundUser => {
             if(foundUser){
                 return done(null, false, `User already exists with username: ${username}`);
@@ -87,18 +93,18 @@ function authenticateSignup(req, username, password, done) {
                 username: username,
                 password: password,
             });
-            return user.save()
+            return (<any>user).save()
                 .then(savedUser => {
                     done(null, savedUser);
                 });
-        })
+        }) as any)
         .catch(err => {
             return done(err);
         });
 }
 
 function authenticateClient(username, password, callback) {
-  Client.findOne({ clientIdentifier: username }, function (err, client) {
+  Client.findOne({ clientIdentifier: username }, function (err, client:any) {
     if (err) { return callback(err); }
 
     // No client found with that id or bad password
@@ -110,7 +116,7 @@ function authenticateClient(username, password, callback) {
 }
 
 function authenticateAccessToken(accessToken, callback) {
-  Token.findOne({value: accessToken }, function (err, token) {
+  Token.findOne({value: accessToken }, function (err, token:any) {
     if (err) { return callback(err); }
 
     // No token found

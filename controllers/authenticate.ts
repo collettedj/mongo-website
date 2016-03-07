@@ -2,7 +2,7 @@
 
 var passport = require('passport');
 import {ControllerBase} from './base/controller-base';
-const models = require('../models');
+import * as models from '../models';
 
 export class AuthenticateController extends ControllerBase {
 
@@ -38,6 +38,7 @@ export class AuthenticateController extends ControllerBase {
 
     authenticateLoginMiddleware(strategyName){
         return (req, res, next) => {
+
               passport.authenticate(strategyName, function(err, user, info) {
                     if (err) {
                         return next(err);

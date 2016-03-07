@@ -5,9 +5,9 @@
  * @module models/index
  */
 "use strict";
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
+// import * as _ from 'lodash';
+// import * as fs from 'fs';
+// import * as path from 'path';
 var mongoose = require('mongoose');
 var debug = require('debug');
 var dbconf = require('../config/dbconf');
@@ -23,20 +23,17 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     debugserver("connected to mongo database");
 });
-var basename = path.basename(module.filename);
-var skipFiles = [basename];
-function loadModels() {
-    var models = {};
-    fs.readdirSync(__dirname)
-        .filter(function (file) {
-        return (file.indexOf('.') !== 0) && path.extname(file).toLowerCase() === ".js" && !_.includes(skipFiles, file);
-    })
-        .forEach(function (file) {
-        var basename = path.basename(file, '.js');
-        var Model = require('./' + basename);
-        models[Model.modelName] = Model;
-    });
-    return models;
+var client_1 = require('./client');
+exports.Client = client_1.Client;
+var token_1 = require('./token');
+exports.Token = token_1.Token;
+var code_1 = require('./code');
+exports.Code = code_1.Code;
+var user_1 = require('./user');
+exports.User = user_1.User;
+var error_log_1 = require('./error-log');
+exports.ErrorLog = error_log_1.ErrorLog;
+function initModels() {
 }
-module.exports = loadModels();
+exports.initModels = initModels;
 //# sourceMappingURL=index.js.map

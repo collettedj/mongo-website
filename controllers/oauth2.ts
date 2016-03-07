@@ -3,7 +3,7 @@
 const oauth2mid = require('./base/oauth2-middleware');
 // const ControllerBase = require('./base/controller-base');
 import {ControllerBase} from './base/controller-base';
-const ErrorLog = require('../models').ErrorLog;
+import {ErrorLog} from '../models';
 
 export class Oauth2Controller extends ControllerBase {
 

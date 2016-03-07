@@ -42,6 +42,4 @@ const CodeSchema = new Schema({
  * Mongoose Code model
  * @type {Model}
  */
-const Code = mongoose.model('Code', CodeSchema);
-
-export = Code;
+export const Code = mongoose.model('Code', CodeSchema);

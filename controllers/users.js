@@ -65,6 +65,7 @@ var UserController = (function (_super) {
             return function (req, res, next) {
                 var requestId = req.params.id;
                 models.Client.find({ "userId": requestId })
+                    .exec()
                     .then(function (clients) {
                     req.modelResult.clients = clients;
                     next();

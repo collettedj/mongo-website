@@ -7,14 +7,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 var oauth2mid = require('./base/oauth2-middleware');
 // const ControllerBase = require('./base/controller-base');
 var controller_base_1 = require('./base/controller-base');
-var ErrorLog = require('../models').ErrorLog;
+var models_1 = require('../models');
 var Oauth2Controller = (function (_super) {
     __extends(Oauth2Controller, _super);
     /**
      * @param  {object} app express application object
      */
     function Oauth2Controller(app) {
-        _super.call(this, app, ErrorLog);
+        _super.call(this, app, models_1.ErrorLog);
     }
     /**
      * the creatRoutes function creates all of the routes for the class
