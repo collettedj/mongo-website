@@ -4,7 +4,8 @@
  */
 "use strict";
 
-const _ = require('lodash');
+import * as _ from 'lodash';
+import {Application} from 'express';
 import {Model} from 'mongoose';
 import {ModelUtils} from '../../utils/model-utils';
 import {ControllerBase} from './controller-base';
@@ -22,7 +23,7 @@ export class ModelControllerBase extends ControllerBase{
 	 * @param {object} Model The mongoose model that the controller will use.
 	 * @param {object} ErrorLog The mongoose model that is used for logging.
 	 */
-	constructor(app, Model, ErrorLog){
+	constructor(app: Application, Model, ErrorLog){
 	    super(app, ErrorLog);
 
 		this.Model = Model;

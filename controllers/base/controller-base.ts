@@ -28,7 +28,7 @@ export class ControllerBase{
 	 * @param {object} Model The mongoose model that the controller will use.
 	 * @param {object} ErrorLog The mongoose model that is used for logging.
 	 */
-	constructor(public app:any, public ErrorLog: Model<any>){
+	constructor(public app:express.Application, public ErrorLog: Model<any>){
 		this.router = express.Router();
 		this.isAuthenticated = isAuthenticated;
 		this.isClientAuthenticated = isClientAuthenticated;

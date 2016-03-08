@@ -3,7 +3,6 @@
  * @module routes/model-controller-base
  */
 "use strict";
-const _ = require('lodash');
 const model_utils_1 = require('../../utils/model-utils');
 const controller_base_1 = require('./controller-base');
 /**
