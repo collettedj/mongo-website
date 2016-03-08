@@ -11,6 +11,7 @@
     "removeComments": false,
 
     "noLib": false
+    // "outDir": "build/"
   },
   "exclude": [
     "node_modules",
@@ -19,6 +20,7 @@
     "gulpfile.ts"
   ],
   "compileOnSave": false
+
 }
 
 // {
