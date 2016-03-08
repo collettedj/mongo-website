@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "typings install",
     "start": "concurrent \"npm run tsc:w\" \"gulp\" ",
     "pretest": "./node_modules/gulp/bin/gulp.js tslint",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha ./tests/**/*test.js ",
