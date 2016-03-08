@@ -3,13 +3,13 @@
  * @module models/error-log
  */
 "use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 /**
  * Mongoose schema for error logs
  * @type {Schema}
  */
-var ErrorLogSchema = new Schema({
+const ErrorLogSchema = new Schema({
     message: {
         type: String,
         required: true,

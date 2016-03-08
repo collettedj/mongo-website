@@ -3,18 +3,18 @@
  * @module app
  */
 'use strict';
-var express = require('express');
-var path = require('path');
+const express = require('express');
+const path = require('path');
 // import * as favicon from 'serve-favicon';
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var passport = require('passport');
-var models = require('./models');
-var controllers_1 = require('./controllers');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('passport');
+const models = require('./models');
+const controllers_1 = require('./controllers');
 models.initModels();
-var app = express();
+const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

@@ -3,13 +3,13 @@
  * @module models/Token
  */
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 /**
  * Mongoose schema to for Tokens
  * @type {Schema}
  */
-var TokenSchema = new Schema({
+const TokenSchema = new Schema({
     value: {
         type: String,
         required: true

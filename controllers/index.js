@@ -3,12 +3,12 @@
  * @module routes/index
  */
 "use strict";
-var authenticate_1 = require('./authenticate');
-var clients_1 = require('./clients');
-var oauth2_1 = require('./oauth2');
-var users_1 = require('./users');
+const authenticate_1 = require('./authenticate');
+const clients_1 = require('./clients');
+const oauth2_1 = require('./oauth2');
+const users_1 = require('./users');
 function loadRoutes(baseRoutePath, app) {
-    var controllers = [
+    const controllers = [
         {
             controller: new authenticate_1.AuthenticateController(app),
             path: "authenticate"
@@ -25,7 +25,7 @@ function loadRoutes(baseRoutePath, app) {
             controller: new users_1.UserController(app),
             path: "users"
         }];
-    controllers.forEach(function (c) {
+    controllers.forEach(c => {
         c.controller.applyControllerToRouter();
         app.use(baseRoutePath + c.path, c.controller.router);
     });

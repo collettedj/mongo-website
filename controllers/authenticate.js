@@ -1,25 +1,19 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var passport = require('passport');
-var controller_base_1 = require('./base/controller-base');
-var models = require('../models');
-var AuthenticateController = (function (_super) {
-    __extends(AuthenticateController, _super);
+const controller_base_1 = require('./base/controller-base');
+const models = require('../models');
+class AuthenticateController extends controller_base_1.ControllerBase {
     /**
      * @param  {object} app express application object
      */
-    function AuthenticateController(app) {
-        _super.call(this, app, models.ErrorLog);
+    constructor(app) {
+        super(app, models.ErrorLog);
     }
     /**
      * the creatRoutes function creates all of the routes for the class
      * @return {Void}
      */
-    AuthenticateController.prototype.createRoutes = function () {
+    createRoutes() {
         // Create endpoint handlers for oauth2 authorize
         this.router.post('/login', this.authenticateLoginMiddleware("login"));
         /* Handle Registration POST */
@@ -32,9 +26,9 @@ var AuthenticateController = (function (_super) {
             req.logout();
             res.sendStatus(200);
         });
-    };
-    AuthenticateController.prototype.authenticateLoginMiddleware = function (strategyName) {
-        return function (req, res, next) {
+    }
+    authenticateLoginMiddleware(strategyName) {
+        return (req, res, next) => {
             passport.authenticate(strategyName, function (err, user, info) {
                 if (err) {
                     return next(err);
@@ -54,8 +48,7 @@ var AuthenticateController = (function (_super) {
                 }
             })(req, res, next);
         };
-    };
-    return AuthenticateController;
-}(controller_base_1.ControllerBase));
+    }
+}
 exports.AuthenticateController = AuthenticateController;
 //# sourceMappingURL=authenticate.js.map

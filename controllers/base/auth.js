@@ -3,11 +3,11 @@
  * @module routes/auth
  */
 "use strict";
-var passport = require('passport');
-var BasicStrategy = require('passport-http').BasicStrategy;
-var LocalStrategy = require('passport-local').Strategy;
-var BearerStrategy = require('passport-http-bearer').Strategy;
-var models_1 = require('../../models');
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
+const LocalStrategy = require('passport-local').Strategy;
+const BearerStrategy = require('passport-http-bearer').Strategy;
+const models_1 = require('../../models');
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
@@ -30,7 +30,7 @@ passport.deserializeUser(function (id, done) {
  */
 function authenticate(username, password, callback) {
     try {
-        models_1.User.findOne({ username: { $regex: new RegExp("^" + username + "$", "i") } }, function (err, user) {
+        models_1.User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") } }, function (err, user) {
             if (err) {
                 return callback(err);
             }
@@ -49,7 +49,7 @@ function authenticate(username, password, callback) {
                 }
                 // Password did not match
                 if (!isMatch) {
-                    return user.incrementBadPasswordAttempts(function (err, updatedUser) {
+                    return user.incrementBadPasswordAttempts((err, updatedUser) => {
                         if (err) {
                             return callback(err);
                         }
@@ -57,7 +57,7 @@ function authenticate(username, password, callback) {
                     });
                 }
                 // Success
-                return user.resetBadPasswordAttempts(function (err, updatedUser) {
+                return user.resetBadPasswordAttempts((err, updatedUser) => {
                     if (err) {
                         return callback(err);
                     }
@@ -84,22 +84,22 @@ exports.authenticate = authenticate;
 function authenticateSignup(req, username, password, done) {
     models_1.User.findOne({ 'username': username })
         .exec()
-        .then(function (foundUser) {
+        .then(foundUser => {
         if (foundUser) {
-            return done(null, false, "User already exists with username: " + username);
+            return done(null, false, `User already exists with username: ${username}`);
         }
-        var user = new models_1.User({
+        const user = new models_1.User({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             username: username,
             password: password,
         });
         return user.save()
-            .then(function (savedUser) {
+            .then(savedUser => {
             done(null, savedUser);
         });
     })
-        .catch(function (err) {
+        .catch(err => {
         return done(err);
     });
 }

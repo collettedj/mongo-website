@@ -4,10 +4,10 @@
  * www module. runs the express application
  * @module www
  */
-var debug = require('debug');
-var http = require('http');
-var app = require('../app');
-var debugserver = debug('mongo-website:server');
+const debug = require('debug');
+const http = require('http');
+const app = require('../app');
+const debugserver = debug('mongo-website:server');
 /**
  * Get port from environment and store in Express.
  */

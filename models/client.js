@@ -4,13 +4,13 @@
  */
 "use strict";
 // const mongoose = require("mongoose");
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 /**
  * Mongoose sub schema for roles in an Client
  * @type {Schema}
  */
-var RoleSchema = new Schema({
+const RoleSchema = new Schema({
     name: String,
     description: String,
 });
@@ -18,7 +18,7 @@ var RoleSchema = new Schema({
  * Mongoose schema to for Clients
  * @type {Schema}
  */
-var ClientSchema = new Schema({
+const ClientSchema = new Schema({
     name: {
         type: String,
         unique: true,

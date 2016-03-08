@@ -3,14 +3,14 @@
  * @module models/user
  */
 "use strict";
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+const Schema = mongoose.Schema;
 /**
  * Mongoose sub schema for roles that a user is a member of
  * @type {Schema}
  */
-var ClientUserRoleSchema = new Schema({
+const ClientUserRoleSchema = new Schema({
     role: {
         type: Schema.Types.ObjectId,
         ref: "Client.roles._id"
@@ -20,7 +20,7 @@ var ClientUserRoleSchema = new Schema({
  * Mongoose sub schema for clients that a user can access
  * @type {Schema}
  */
-var ClientUserSchema = new Schema({
+const ClientUserSchema = new Schema({
     app: {
         type: Schema.Types.ObjectId,
         ref: "Client",
@@ -31,7 +31,7 @@ var ClientUserSchema = new Schema({
  * Mongoose schema to define user models
  * @type {Schema}
  */
-var UserSchema = new Schema({
+const UserSchema = new Schema({
     firstname: {
         type: String,
         required: true,
@@ -81,13 +81,13 @@ UserSchema.methods.verifyPassword = function (password, cb) {
  * @param  {Function} callback
  */
 UserSchema.methods.incrementBadPasswordAttempts = function (cb) {
-    exports.User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, { new: true }, function (err, updatedUser) {
+    exports.User.findOneAndUpdate({ _id: this._id }, { $inc: { badPasswordAttempts: 1 } }, { new: true }, (err, updatedUser) => {
         if (err) {
             return cb(err);
         }
         if (updatedUser.badPasswordAttempts >= 3) {
             updatedUser.isLockedOut = true;
-            return updatedUser.save(function (err, lockedUser) {
+            return updatedUser.save((err, lockedUser) => {
                 if (err) {
                     return cb(err);
                 }
@@ -102,7 +102,7 @@ UserSchema.methods.incrementBadPasswordAttempts = function (cb) {
  * @param  {Function} callback
  */
 UserSchema.methods.resetBadPasswordAttempts = function (cb) {
-    exports.User.findOneAndUpdate({ _id: this._id }, { $set: { badPasswordAttempts: 0 } }, { new: true }, function (err, updatedUser) {
+    exports.User.findOneAndUpdate({ _id: this._id }, { $set: { badPasswordAttempts: 0 } }, { new: true }, (err, updatedUser) => {
         if (err) {
             return cb(err);
         }

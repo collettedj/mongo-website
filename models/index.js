@@ -8,17 +8,17 @@
 // import * as _ from 'lodash';
 // import * as fs from 'fs';
 // import * as path from 'path';
-var mongoose = require('mongoose');
-var debug = require('debug');
-var dbconf = require('../config/dbconf');
-var debugserver = debug('mongo-website:models');
-var env = process.env.NODE_ENV || "development";
-var mongoUrl = dbconf.mongo[env];
+const mongoose = require('mongoose');
+const debug = require('debug');
+const dbconf = require('../config/dbconf');
+const debugserver = debug('mongo-website:models');
+const env = process.env.NODE_ENV || "development";
+const mongoUrl = dbconf.mongo[env];
 if (!mongoUrl) {
-    throw Error("Could not get mongodb connection string for environment " + env);
+    throw Error(`Could not get mongodb connection string for environment ${env}`);
 }
 mongoose.connect(mongoUrl);
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     debugserver("connected to mongo database");

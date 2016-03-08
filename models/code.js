@@ -3,13 +3,13 @@
  * @module models/code
  */
 "use strict";
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 /**
  * Mongoose schema to for Codes
  * @type {Schema}
  */
-var CodeSchema = new Schema({
+const CodeSchema = new Schema({
     value: {
         type: String,
         required: true
