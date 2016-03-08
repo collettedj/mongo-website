@@ -4,11 +4,11 @@
  * @module config/dbconf
  */
 "use strict";
-exports.config = {
-    mongo: {
+
+export const config = {
+	mongo: {
         production: process.env.MONGO_CONNECTION_PRODUCTION,
-        development: process.env.MONGO_CONNECTION_DEVELOPMENT,
-        test: process.env.MONGO_CONNECTION_TEST,
-    }
+	    development: process.env.MONGO_CONNECTION_DEVELOPMENT,
+	    test: process.env.MONGO_CONNECTION_TEST,
+	}
 };
-//# sourceMappingURL=dbconf.js.map

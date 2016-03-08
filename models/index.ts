@@ -13,7 +13,8 @@
 import * as mongoose from 'mongoose';
 import * as debug from 'debug';
 
-const dbconf = require('../config/dbconf');
+// const dbconf = require('../config/dbconf');
+import {config as dbconf} from '../config/dbconf';
 const debugserver = debug('mongo-website:models');
 
 const env = process.env.NODE_ENV || "development";

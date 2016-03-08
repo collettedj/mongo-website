@@ -10,10 +10,11 @@
 // import * as path from 'path';
 const mongoose = require('mongoose');
 const debug = require('debug');
-const dbconf = require('../config/dbconf');
+// const dbconf = require('../config/dbconf');
+const dbconf_1 = require('../config/dbconf');
 const debugserver = debug('mongo-website:models');
 const env = process.env.NODE_ENV || "development";
-const mongoUrl = dbconf.mongo[env];
+const mongoUrl = dbconf_1.config.mongo[env];
 if (!mongoUrl) {
     throw Error(`Could not get mongodb connection string for environment ${env}`);
 }
