@@ -2,9 +2,13 @@
  * gulpfile module. set up gulp tasks
  * @module gulpfile
  */
+
 import * as gulp from 'gulp';
-import * as nodemon from 'gulp-nodemon';
 import * as tslint from 'gulp-tslint';
+import * as nodemon from 'gulp-nodemon';
+
+// import * as ts from 'gulp-typescript';
+
 // var jshint = require('gulp-jshint');
 // var mocha = require('gulp-mocha');
 // var nodemon = require('gulp-nodemon');
@@ -26,7 +30,7 @@ gulp.task('tslint', () =>
 );
 
 const nodemonOpts: nodemon.Option = {
-    script: './bin/www.js',
+    script: './build/bin/www.js',
     ext: 'html js',
     tasks: ['tslint'],
     execMap: { 'js': 'node --debug' },
@@ -36,7 +40,7 @@ const nodemonOpts: nodemon.Option = {
     }
 };
 
-gulp.task('default', ['tslint'], function () {
+gulp.task('default', ['copy', 'tslint'], function () {
     return nodemon(nodemonOpts)
         // .on('crash', nodemon.restart)
         .on('restart', function () {
@@ -44,7 +48,7 @@ gulp.task('default', ['tslint'], function () {
         });
 });
 
-gulp.task('break', ['tslint'], function() {
+gulp.task('break', ['copy', 'tslint'], function() {
     nodemonOpts.execMap['js'] = 'node --debug-brk';
     return nodemon(nodemonOpts)
         // .on('crash', nodemon.restart)
@@ -52,4 +56,12 @@ gulp.task('break', ['tslint'], function() {
             console.log('restarted!');
         });
 });
+
+gulp.task('copy', () => {
+    return gulp
+        .src('public/**')
+        .pipe(gulp.dest('build/public'));
+});
+
+
 

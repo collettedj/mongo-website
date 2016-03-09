@@ -11,6 +11,7 @@
     "gulp": "github:DefinitelyTyped/DefinitelyTyped/gulp/gulp.d.ts#fbdc1b91125a87e62be3803f58aabb176cc2fd50",
     "gulp-nodemon": "github:DefinitelyTyped/DefinitelyTyped/gulp-nodemon/gulp-nodemon.d.ts#abc2bcfb8524b1e027e6298d3348012b5b06eda5",
     "gulp-tslint": "github:DefinitelyTyped/DefinitelyTyped/gulp-tslint/gulp-tslint.d.ts#ba3d78e4b5965cedf44a52e9c36fb72932352c16",
+    "gulp-typescript": "github:DefinitelyTyped/DefinitelyTyped/gulp-typescript/gulp-typescript.d.ts#960fd659b456e2fb5d23c52794ffdc56b09796cf",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash-3.10.d.ts#86dbea8fc37d9473fee465da4f0a21bea4f8cbd9",
     "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#cb5206a8ac1c9a3ddfd126f5ecea6729b2361452",
     "mongoose": "github:DefinitelyTyped/DefinitelyTyped/mongoose/mongoose.d.ts#cebde64b3a1d63d07ee7c7dbc49b631ce220d027",
