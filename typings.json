@@ -3,6 +3,7 @@
   "ambientDependencies": {
     "bcrypt-nodejs": "github:DefinitelyTyped/DefinitelyTyped/bcrypt-nodejs/bcrypt-nodejs.d.ts#d61a1c6578c9f0d2612a6a860ebe5f47fc716cc7",
     "body-parser": "github:DefinitelyTyped/DefinitelyTyped/body-parser/body-parser.d.ts#9a2c50ea846ee6ae36feaea0accc77ae7b08a748",
+    "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#1914a00b3c740348dae407ee0d2be89b0b58ad7f",
     "cookie-parser": "github:DefinitelyTyped/DefinitelyTyped/cookie-parser/cookie-parser.d.ts#e2001653ffbd99c2fc80a272ca80d8c958136de4",
     "debug": "github:DefinitelyTyped/DefinitelyTyped/debug/debug.d.ts#5ccca9a4efc3d08724ff14ea3a263c7417db0b3d",
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#dd638012d63e069f2c99d06ef4dcc9616a943ee4",

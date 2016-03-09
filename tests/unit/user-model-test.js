@@ -1,28 +1,22 @@
 /* globals describe:true, it:true, beforeEach:true */
 "use strict";
-
-const assert = require('chai').assert;
+const chai_1 = require('chai');
 const models = require('../../models');
-
-describe("unit: user models", function(){
-
-    it("hash password", function(done){
+describe("unit: user models", function () {
+    it("hash password", function (done) {
         const password = 'testpassword';
         const user = new models.User({
-           password: password 
+            password: password
         });
-        
         user.hashPassword((err) => {
-            assert.equal(null,err);
-            assert.notEqual(password, user.password);
-            
+            chai_1.assert.equal(null, err);
+            chai_1.assert.notEqual(password, user.password);
             user.verifyPassword(password, (err, isMatch) => {
-                assert.equal(null,err);
-                assert.ok(isMatch);
-                done(err);    
+                chai_1.assert.equal(null, err);
+                chai_1.assert.ok(isMatch);
+                done(err);
             });
-            
         });
-
     });
 });
+//# sourceMappingURL=user-model-test.js.map

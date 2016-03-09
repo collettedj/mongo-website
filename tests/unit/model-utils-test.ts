@@ -3,8 +3,9 @@
 
 declare const describe: any;
 declare const it: any;
+declare const beforeEach: any;
 
-const assert = require('chai').assert;
+import {assert} from 'chai';
 const models = require('../../models');
 // const ModelUtils = require('../../utils/model-utils');
 import {ModelUtils} from '../../utils/model-utils';
