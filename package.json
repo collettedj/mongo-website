@@ -23,6 +23,7 @@
     "gulp-jshint": "^2.0.0",
     "gulp-mocha": "^2.2.0",
     "gulp-nodemon": "^2.0.6",
+    "gulp-tslint": "^4.3.3",
     "hbs": "^4.0.0",
     "inflection": "^1.8.0",
     "jade": "~1.11.0",
@@ -50,7 +51,6 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",
-    "gulp-tslint": "^4.3.3",
     "supertest": "^1.1.0",
     "tslint": "^3.5.0"
   }
