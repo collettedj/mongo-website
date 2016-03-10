@@ -45,13 +45,13 @@
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0",
     "ts-node": "^0.5.5",
+    "tslint": "^3.5.0",
     "typescript": "^1.8.7",
     "typings": "^0.6.10"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",
-    "supertest": "^1.1.0",
-    "tslint": "^3.5.0"
+    "supertest": "^1.1.0"
   }
 }
