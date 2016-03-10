@@ -6,8 +6,8 @@
     "postinstall": "typings install",
     "prestart": "./node_modules/typescript/bin/tsc && ./node_modules/gulp/bin/gulp.js copy",
     "start": "node ./build/bin/www.js",
-    "pretest": "./node_modules/gulp/bin/gulp.js tslint",
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha ./tests/**/*test.js ",
+    "pretest": "./node_modules/gulp/bin/gulp.js tslint && ./node_modules/typescript/bin/tsc",
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha ./build/tests/**/*test.js ",
     "tsc": "tsc",
     "tsc:w": "tsc -w"
   },
